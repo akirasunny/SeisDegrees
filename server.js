@@ -5,6 +5,11 @@ var bodyParser = require("body-parser");
 var socket = require("socket.io");
 var routes = require("./routes/routes");
 
+// Requiring our models
+var User = require("./models/User.js");
+var Post = require("./models/Post.js");
+var Chat = require("./models/Chat.js");
+
 // Set up a default port, configure mongoose, configure our middleware
 var PORT = process.env.PORT || 3000;
 mongoose.Promise = Promise;
