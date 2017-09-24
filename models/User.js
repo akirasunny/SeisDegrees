@@ -34,6 +34,11 @@ var UserSchema = new Schema({
     pending: [{
         type: Schema.Types.ObjectId,
         ref: "User"
+    }],
+
+    requested: [{
+        type: Schema.Types.ObjectId,
+        ref: "User"
     }]
 
 });
