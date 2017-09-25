@@ -27,6 +27,9 @@ router.delete("/articles/:id", articlesController.destroy);*/
 // Create a new User
 router.post("/User", userController.createUser);
 
+// Validate User login
+router.post("/User/Login", userController.validateLogin);
+
 // Update a User
 router.post("/User/Update/:id", userController.updateUser);
 
