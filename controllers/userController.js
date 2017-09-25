@@ -26,10 +26,9 @@ module.exports = {
         var query = {};
 
         // Check for email or username and modify query
-        if(req.body.login.indexOf('@') === -1){
+        if (req.body.login.indexOf('@') === -1) {
             query.username = req.body.login;
-        }
-        else{
+        } else {
             query.email = req.body.login;
         }
 
@@ -203,8 +202,18 @@ module.exports = {
 
     oneUser: function(req, res) {
 
+        // Create query object
+        var query = {};
+
+        // Check for email or username and modify query
+        if (req.query.username || req.query.email) {
+            query = req.query;
+        } else {
+            query._id = req.params.id;
+        }
+
         // Find one User by their id and populate friends, requested, pending, posts, and tags arrays.
-        User.findById(req.params.id).populate(["friends", "requested", "pending", "posts", "tags"])
+        User.findOne(query).populate(["friends", "requested", "pending", "posts", "tags"])
             // Now, execute that query
             .exec(function(error, user) {
                 // Send any errors to the browser
