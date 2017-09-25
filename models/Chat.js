@@ -5,15 +5,25 @@ var Schema = mongoose.Schema;
 
 // Create article schema
 var ChatSchema = new Schema({
-  room: {
-    type: String,
-    required: true
-  },
-  // title is a required string
-  messages: {
-    type: String,
-    required: true
-  }
+    // room is a required string
+    room: {
+        type: String,
+        required: true
+    },
+
+    owners: [{
+        type: String,
+        required: true
+    }],
+
+    members: [{
+        type: String
+    }],
+
+    messages: [{
+        type: Schema.Types.ObjectId,
+        ref: "Message"
+    }]
 });
 
 // Create the Chat model with the ChatSchema

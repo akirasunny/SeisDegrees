@@ -9,6 +9,7 @@ var Chat = require("../models/Chat.js");
 
 var userController = require("../controllers/userController");
 var postController = require("../controllers/postController");
+var chatController = require("../controllers/chatController");
 
 var router = new express.Router();
 
@@ -73,6 +74,30 @@ router.get("/Posts/:id", postController.onePost);
 
 // Get one Post and delete
 router.get("/Delete/Post/:id", postController.deletePost);
+
+
+// CHAT
+
+// Create a Chat
+router.post("/Chat", chatController.createChat);
+
+// Log a message to a Chat
+router.post("/Chat/Log/:chatId/:userId", chatController.updateLog);
+
+// Add new member to a Chat
+router.get("/Chat/:chatId/Add/:userId", chatController.addMember);
+
+// Add new member to a Chat
+router.get("/Chat/:chatId/Remove/:userId", chatController.removeMember);
+
+// Get all Chats
+router.get("/Chats", chatController.allChats);
+
+// Get one Chat
+router.get("/Chats/:id", chatController.oneChat);
+
+// Get one Chat and delete
+router.get("/Delete/Chat/:id", chatController.deleteChat);
 
 
 module.exports = router;

@@ -183,13 +183,13 @@ module.exports = {
 
     deleteUser: function(req, res) {
 
-        // Find one User by their id and populate friends, requested, pending, posts, and tags arrays.
+        // Find one User by their id and remove.
         User.findByIdAndRemove(req.params.id, function(error, user) {
             // Send any errors to the browser
             if (error) {
                 res.send(error);
             }
-            // Or, send our results to the browser, which will now include the Users/Posts within each of the specified arrays.
+            // Or, send deleted User to the browser.
             else {
                 res.send(user);
             }
