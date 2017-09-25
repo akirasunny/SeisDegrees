@@ -6,6 +6,7 @@ import {
 import Timeline from "./Timeline";
 import Locations from "./Locations";
 import Friends from "./Friends";
+import axios from "axios";
 
 const menuStyle = {
   border: 'none',
@@ -85,6 +86,14 @@ export default class StickyLayout extends Component {
     this.handleCard = this.handleCard.bind(this);
   }
 
+  componentWillMount() {
+    axios.get("/api/Users/" + this.props.id).then(res => {
+      console.log(res.data);
+      this.setState({
+        id: this.props.id,
+      })
+    })
+  }
   handleCard(card) {
     this.setState({ currentcard: card.currentTarget.textContent });
   }

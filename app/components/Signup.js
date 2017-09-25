@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router';
-import { Button, Form, Grid, Header, Image, Message, Segment, Modal } from 'semantic-ui-react';
+import { Button, Form, Grid, Header, Image, Message, Segment, Modal, Icon } from 'semantic-ui-react';
 import axios from "axios";
 
 var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -10,6 +10,7 @@ class Signup extends Component {
     super();
     this.state = {
       switch: false,
+      open: false,
       username: "",
       email: "",
       password: "",
@@ -19,10 +20,15 @@ class Signup extends Component {
     this.handleInput = this.handleInput.bind(this);
     this.handleSignup = this.handleSignup.bind(this);
     this.handleLog = this.handleLog.bind(this);
+    this.handleOpen = this.handleOpen.bind(this);
   }
 
   switch() {
     this.setState({ switch: !this.state.switch});
+  }
+
+  handleOpen() {
+    this.setState({ open: !this.state.open });
   }
 
   handleInput(event) {
@@ -49,20 +55,29 @@ class Signup extends Component {
         password: state.password 
       };
       axios.post("/api/User", obj).then(res => {
-        this.props.handleLogin();
-        localStorage.setItem("userid", res.data._id);
-        window.location = "/";
+        document.cookie = `userId = ${res.data._id}; expires=Thu, 18 Dec 2020 12:00:00 UTC`;
+        this.props.handleLogin(res.data._id);
+        this.handleOpen();
       });
     }
   }
 
   handleLog() {
-
+    var state = this.state;
+    var obj = {
+      login: state.username,
+      password: state.password
+    };
+    axios.post("/api/User/Login", obj).then(res => {
+      document.cookie = `userId = ${res.data._id}; expires=Thu, 18 Dec 2020 12:00:00 UTC`;
+      this.props.handleLogin(res.data._id);
+      this.handleOpen();
+    })
   }
 
   render() {
     return (
-      <Modal trigger={<Button as='a' inverted style={{ marginLeft: '0.5em' }}>Sign Up</Button>}>
+      <Modal open={this.state.open} trigger={<Button as='a' inverted style={{ marginLeft: '0.5em' }} onClick={this.handleOpen}>Log in / Sign Up</Button>}> <Icon key="close" name="close" onClick={this.handleOpen} />
         <Grid
           textAlign='center'
           style={{ height: '100%', padding: 50 }}
@@ -130,17 +145,21 @@ class Signup extends Component {
             <Form size='large'>
               <Segment stacked>
                 <Form.Input
+                  onChange={this.handleInput}
                   fluid
                   icon='user'
                   iconPosition='left'
                   placeholder='Username / E-mail address'
+                  id="username"
                 />
                 <Form.Input
+                  onChange={this.handleInput}
                   fluid
                   icon='lock'
                   iconPosition='left'
                   placeholder='Password'
                   type='password'
+                  id="password"
                 />
 
                 <Button color='grey' fluid size='large' onClick={this.handleLog}>Login</Button>
