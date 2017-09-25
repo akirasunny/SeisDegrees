@@ -19,10 +19,10 @@ import Signup from "./Signup"
 const FixedMenu = () => (
   <Menu inverted fixed='top' size='large'>
     <Container>
-        <Link to="/"><Menu.Item as='a' active>Home</Menu.Item></Link>
-        <Link to="/"><Menu.Item as='a'>Discover</Menu.Item></Link>
-        <Link to="/"><Menu.Item as='a'>Notifications</Menu.Item></Link>
-        <Link to="/"><Menu.Item as='a'>Messages</Menu.Item></Link>
+        <Link to="/"><Menu.Item active>Home</Menu.Item></Link>
+        <Link to="/"><Menu.Item>Discover</Menu.Item></Link>
+        <Link to="/"><Menu.Item>Notifications</Menu.Item></Link>
+        <Link to="/"><Menu.Item>Messages</Menu.Item></Link>
     </Container>
   </Menu>
 )
@@ -53,26 +53,26 @@ class Index extends Component {
           onBottomVisible={this.hideFixedMenu}
           once={false}
         >
-        <Segment
-          inverted
-          textAlign='center'
-          style={{padding: '1em 0em' }}
-          vertical
-        >
-          <Container>
-            <Menu inverted pointing secondary size='large'>
-              <Link to="/"><Menu.Item as='a' active>Home</Menu.Item></Link>
-              <Link to="/"><Menu.Item as='a'>Discover</Menu.Item></Link>
-              <Link to="/"><Menu.Item as='a'>Notifications</Menu.Item></Link>
-              <Link to="/"><Menu.Item as='a'>Messages</Menu.Item></Link>
-              <Menu.Item position='right'>
-                <Login />
-                <Signup />
-              </Menu.Item>
-            </Menu>
-          </Container>
-        </Segment>
-        
+          <Segment
+            inverted
+            textAlign='center'
+            style={{padding: '1em 0em' }}
+            vertical
+          >
+            <Container>
+              <Menu inverted pointing secondary size='large'>
+                <Link to="/"><Menu.Item active>Home</Menu.Item></Link>
+                <Link to="/"><Menu.Item>Discover</Menu.Item></Link>
+                <Link to="/"><Menu.Item>Notifications</Menu.Item></Link>
+                <Link to="/"><Menu.Item>Messages</Menu.Item></Link>
+                <Menu.Item position='right'>
+                  <Login />
+                  <Signup />
+                </Menu.Item>
+              </Menu>
+            </Container>
+          </Segment>
+
           <Segment
             inverted
             textAlign='center'
@@ -116,7 +116,6 @@ class Index extends Component {
               <Grid.Column floated='right' width={6}>
                 <Image
                   bordered
-                  rounded
                   size='large'
                   src='#'
                   alt="An image"
