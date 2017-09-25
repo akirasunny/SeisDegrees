@@ -50,8 +50,8 @@ class Signup extends Component {
       };
       axios.post("/api/User", obj).then(res => {
         this.props.handleLogin();
-        console.log(res);
-        localStorage.setItem("userid", res._id);
+        localStorage.setItem("userid", res.data._id);
+        window.location = "/";
       });
     }
   }
