@@ -12,12 +12,25 @@ import {
   Segment,
   Visibility,
 } from 'semantic-ui-react';
+import { Link } from 'react-router';
+import Login from "./Login";
+import Signup from "./Signup"
+
+const FixedMenu = () => (
+  <Menu inverted fixed='top' size='large'>
+    <Container>
+        <Link to="/"><Menu.Item as='a' active>Home</Menu.Item></Link>
+        <Link to="/"><Menu.Item as='a'>Discover</Menu.Item></Link>
+        <Link to="/"><Menu.Item as='a'>Notifications</Menu.Item></Link>
+        <Link to="/"><Menu.Item as='a'>Messages</Menu.Item></Link>
+    </Container>
+  </Menu>
+)
 
 class Index extends Component {
   constructor() {
     super();
     this.state = {
-      visible: false
     };
     this.hideFixedMenu = this.hideFixedMenu.bind(this);
     this.showFixedMenu = this.showFixedMenu.bind(this);
@@ -40,13 +53,32 @@ class Index extends Component {
           onBottomVisible={this.hideFixedMenu}
           once={false}
         >
+        <Segment
+          inverted
+          textAlign='center'
+          style={{padding: '1em 0em' }}
+          vertical
+        >
+          <Container>
+            <Menu inverted pointing secondary size='large'>
+              <Link to="/"><Menu.Item as='a' active>Home</Menu.Item></Link>
+              <Link to="/"><Menu.Item as='a'>Discover</Menu.Item></Link>
+              <Link to="/"><Menu.Item as='a'>Notifications</Menu.Item></Link>
+              <Link to="/"><Menu.Item as='a'>Messages</Menu.Item></Link>
+              <Menu.Item position='right'>
+                <Login />
+                <Signup />
+              </Menu.Item>
+            </Menu>
+          </Container>
+        </Segment>
+        
           <Segment
             inverted
             textAlign='center'
             style={{ minHeight: 500, padding: '1em 0em' }}
             vertical
           >
-
             <Container text>
               <Header
                 as='h1'
@@ -108,7 +140,7 @@ class Index extends Component {
               <Grid.Column style={{ paddingBottom: '5em', paddingTop: '5em' }}>
                 <Header as='h3' style={{ fontSize: '2em' }}>"I shouldn't have gone with their competitor."</Header>
                 <p style={{ fontSize: '1.33em' }}>
-                  <Image avatar src='/assets/images/avatar/large/nan.jpg' />
+                  <Image avatar src='#' alt="Avatar" />
                   <b>Nan</b> Chief Fun Officer Acme Toys
                 </p>
               </Grid.Column>
