@@ -7,17 +7,26 @@ var Schema = mongoose.Schema;
 var PostSchema = new Schema({
   // Just a string
   title: {
-    type: String
+    type: String,
+    required: true
   },
   // Just a string
   body: {
-    type: String
+    type: String,
+    required: true
   },
 
-  users: {
+  owner: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+    required: true
+  },
+
+  tagged: [{
   	type: Schema.Types.ObjectId,
     ref: "User"
-  }
+  }]
+
 });
 
 // Remember, Mongoose will automatically save the ObjectIds of the Posts
