@@ -8,12 +8,31 @@ var UserSchema = new Schema({
     // title is a required string
     username: {
         type: String,
+        trim: true,
         required: true
     },
-    // link is a required string
-    img: {
+    // Email is required and needs to be validated
+    email: {
         type: String,
-        required: true
+        trim: true,
+        required: true/*,
+        validate: {
+            validator: function(email) {
+                var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+                return re.test(email)
+            }
+        }*/
+    },
+    // Password is required
+    password: {
+        type: String,
+        trim: true,
+        required: true,
+        bcrypt: true
+    },
+    // Profile img
+    img: {
+        type: String
     },
     // This only saves one note's ObjectId, ref refers to the Note model
     posts: [{
@@ -42,6 +61,9 @@ var UserSchema = new Schema({
     }]
 
 });
+
+// Attach to predefined password and secret field 
+UserSchema.plugin(require('mongoose-bcrypt'));
 
 // Create the User model with the UserSchema
 var User = mongoose.model("User", UserSchema);

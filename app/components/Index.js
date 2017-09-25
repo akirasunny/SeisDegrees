@@ -31,9 +31,15 @@ class Index extends Component {
   constructor() {
     super();
     this.state = {
+      login: false
     };
     this.hideFixedMenu = this.hideFixedMenu.bind(this);
     this.showFixedMenu = this.showFixedMenu.bind(this);
+    this.handleLogin = this.handleLogin.bind(this);
+  }
+
+  handleLogin() {
+    this.setState({ login: false });
   }
 
   hideFixedMenu() {

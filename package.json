@@ -18,10 +18,13 @@
   "homepage": "https://github.com/akirasunny/diary#readme",
   "dependencies": {
     "axios": "^0.16.2",
+    "bcrypt": "^1.0.3",
     "body-parser": "^1.18.2",
     "express": "^4.15.4",
+    "fs": "0.0.1-security",
     "lodash": "^4.17.4",
     "mongoose": "^4.11.12",
+    "mongoose-bcrypt": "^1.5.0",
     "morgan": "^1.8.2",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",

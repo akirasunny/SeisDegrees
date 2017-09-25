@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router';
 import { Button, Form, Grid, Header, Image, Message, Segment, Modal } from 'semantic-ui-react';
+import axios from "axios";
 
 var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
@@ -16,7 +17,8 @@ class Signup extends Component {
     };
     this.switch = this.switch.bind(this);
     this.handleInput = this.handleInput.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleSignup = this.handleSignup.bind(this);
+    this.handleLog = this.handleLog.bind(this);
   }
 
   switch() {
@@ -29,16 +31,33 @@ class Signup extends Component {
     this.setState(obj);
   }
 
-  handleSubmit() {
-    if (re.test(this.state.email)) {
+  handleSignup() {
+    if (!re.test(this.state.email)) {
       return (alert("Invalid email address."));
+    }
+    else if (this.state.password.length < 8) {
+      return (alert("Password should be at least 8-digit long."))
     }
     else if (this.state.password !== this.state.password1) {
       return (alert("Password doesn't match."));
     }
     else {
-      
+      var state = this.state;
+      var obj = {
+        username: state.username,
+        email: state.email,
+        password: state.password 
+      };
+      axios.post("/api/User", obj).then(res => {
+        this.props.handleLogin();
+        console.log(res);
+        localStorage.setItem("userid", res._id);
+      });
     }
+  }
+
+  handleLog() {
+
   }
 
   render() {
@@ -94,7 +113,7 @@ class Signup extends Component {
                   id="password1"
                   required
                 />
-                <Button color='grey' fluid size='large' onClick={this.handleSubmit}>Sign up</Button>
+                <Button color='grey' fluid size='large' onClick={this.handleSignup}>Sign up</Button>
               </Segment>
             </Form>
             <Message>
@@ -124,7 +143,7 @@ class Signup extends Component {
                   type='password'
                 />
 
-                <Button color='grey' fluid size='large' onClick={this.switch}>Login</Button>
+                <Button color='grey' fluid size='large' onClick={this.handleLog}>Login</Button>
               </Segment>
             </Form>
             <Message>
