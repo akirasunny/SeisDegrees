@@ -1,4 +1,5 @@
 var User = require("../models/User.js");
+var bcrypt = require('bcrypt');
 
 module.exports = {
 
@@ -17,6 +18,43 @@ module.exports = {
                 res.send(user);
             }
         });
+    },
+
+    validateLogin: function(req, res) {
+
+        // Create query object
+        var query = {};
+
+        // Check for email or username and modify query
+        if(req.body.login.indexOf('@') === -1){
+            query.username = req.body.login;
+        }
+        else{
+            query.email = req.body.login;
+        }
+
+        // Find one User by their username/email
+        User.findOne(query, function(error, user) {
+            // Send any errors to the browser
+            if (error) {
+                res.send(error);
+            }
+            // Or, compare the password to the stored hash.
+            else {
+
+                bcrypt.compare(req.body.password, user.password, function(err, response) {
+
+                    // Return true/false if successful/unsuccessful
+                    if (response) {
+                        res.send(true);
+                    } else {
+                        res.send(false);
+                    }
+
+                })
+            }
+        });
+
     },
 
     updateUser: function(req, res) {
