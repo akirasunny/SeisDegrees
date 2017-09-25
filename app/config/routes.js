@@ -10,12 +10,11 @@ import Login from "../components/Login";
 import Index from "../components/Index";
 import Signup from "../components/Signup";
 import Profile from "../components/Profile";
+
 // Export the Routes
 module.exports = (
 	<Router history={hashHistory}>
 		<Route path="/" component={Main}>
-			<Route path="/login" component={Login} />
-			<Route path="/Signup" component={Signup} />
 			<Route path="/profile" component={Profile} />
 			<IndexRoute component={Index} />
 		</Route>
