@@ -2,7 +2,10 @@ import _ from 'lodash'
 import React, { Component } from 'react'
 import {
   Container, Divider, Dropdown, Grid, Header, Icon, Image, List, Menu, Segment, Visibility,
-} from 'semantic-ui-react'
+} from 'semantic-ui-react';
+import Timeline from "./Timeline";
+import Locations from "./Locations";
+import Friends from "./Friends";
 
 const menuStyle = {
   border: 'none',
@@ -63,33 +66,27 @@ const RightImage = () => (
   />
 )
 
-const Paragraph = () => (
-  <p>
-    {[
-      'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum ',
-      'tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas ',
-      'semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ',
-      'ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean ',
-      'fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. ',
-      'Donec non enim in turpis pulvinar facilisis. Ut felis. Praesent dapibus, neque id cursus faucibus, tortor ',
-      'neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, ',
-      'accumsan porttitor, facilisis luctus, metus',
-    ].join('')}
-  </p>
-)
-
 export default class StickyLayout extends Component {
   constructor() {
     super();
     this.state = {
       menuFixed: false,
       overlayFixed: false,
+      currentcard: "Timeline",
+      timeline: [],
+      locations: [],
+      friends: []
     };
     this.handleOverlayRef = this.handleOverlayRef.bind(this);
     this.stickOverlay = this.stickOverlay.bind(this);
     this.stickTopMenu = this.stickTopMenu.bind(this);
     this.unStickOverlay = this.unStickOverlay.bind(this);
     this.unStickTopMenu = this.unStickTopMenu.bind(this);
+    this.handleCard = this.handleCard.bind(this);
+  }
+
+  handleCard(card) {
+    this.setState({ currentcard: card.currentTarget.textContent });
   }
 
   handleOverlayRef(c) {
@@ -128,9 +125,9 @@ export default class StickyLayout extends Component {
           }
         `}</style>
 
-        <Container text style={{ marginTop: '2em' }}>
-          <Header as='h1'>Sticky Example</Header>
-          <p>This example shows how to use lazy loaded images, a sticky menu, and a simple text container</p>
+        <Container text style={{ marginTop: '2em'}}>
+          <Header as='h1'>Username</Header>
+          <p>User Bio</p>
         </Container>
 
         {/* Attaching the top menu is a simple operation, we only switch `fixed` prop add add another styles if it has
@@ -148,19 +145,19 @@ export default class StickyLayout extends Component {
           >
             <Container text>
               <Menu.Item>
-                <Image size='mini' src='/logo.png' />
+                <Image size='small' src='#' alt="profile pic"/>
               </Menu.Item>
-              <Menu.Item header>Project Name</Menu.Item>
-              <Menu.Item as='a'>Blog</Menu.Item>
-              <Menu.Item as='a'>Articles</Menu.Item>
+              {this.state.currentcard === "Timeline" ? <Menu.Item header onClick={this.handleCard} value="Timeline">Timeline</Menu.Item> : <Menu.Item as="a" onClick={this.handleCard} value="Timeline">Timeline</Menu.Item>}
+              {this.state.currentcard === "Locations"? <Menu.Item header onClick={this.handleCard} value="Locations">Locations</Menu.Item> : <Menu.Item as='a' onClick={this.handleCard} value="Locations">Locations</Menu.Item>}
+              {this.state.currentcard === "Friends" ? <Menu.Item header onClick={this.handleCard} value="Friends">Friends</Menu.Item> : <Menu.Item as='a' onClick={this.handleCard} value="Friends">Friends</Menu.Item>}
 
               <Menu.Menu position='right'>
-                <Dropdown text='Dropdown' pointing className='link item'>
+                <Dropdown pointing className='link item'>
                   <Dropdown.Menu>
-                    <Dropdown.Item>List Item</Dropdown.Item>
-                    <Dropdown.Item>List Item</Dropdown.Item>
+                    <Dropdown.Item>Add Friend</Dropdown.Item>
+                    <Dropdown.Item>Send Message</Dropdown.Item>
                     <Dropdown.Divider />
-                    <Dropdown.Header>Header Item</Dropdown.Header>
+                    <Dropdown.Header>More Options</Dropdown.Header>
                     <Dropdown.Item>
                       <i className='dropdown icon' />
                       <span className='text'>Submenu</span>
@@ -177,9 +174,13 @@ export default class StickyLayout extends Component {
           </Menu>
         </Visibility>
 
-        <Container text>
-          { _.times(3, i => <Paragraph key={i} />) }
-
+        <Container text style={{minHeight: 500}}>
+        {this.state.currentcard === "Timeline" &&
+          <Timeline timeline={this.state.timeline} />}
+        {this.state.currentcard === "Locations" &&
+          <Locations locations={this.state.locations} />}
+        {this.state.currentcard === "Friends" &&
+          <Friends friends={this.state.friends} />}
           {/* Example with overlay menu is more complex, SUI simply clones all elements inside, but we should use a
               different approach.
               An empty Visibility element controls the need to change the fixing of element below, it also uses height
@@ -218,20 +219,6 @@ export default class StickyLayout extends Component {
               </Menu.Item>
             </Menu>
           </div>
-
-          { _.times(3, i => <Paragraph key={i} />) }
-          <LeftImage />
-
-          <Paragraph />
-          <RightImage />
-
-          { _.times(4, i => <Paragraph key={i} />) }
-          <LeftImage />
-
-          <Paragraph />
-          <RightImage />
-
-          { _.times(2, i => <Paragraph key={i} />) }
         </Container>
 
         <Segment
