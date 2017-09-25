@@ -13,7 +13,6 @@ var UserSchema = new Schema({
     // link is a required string
     img: {
         type: String,
-        required: true
     },
     // This only saves one note's ObjectId, ref refers to the Note model
     posts: [{

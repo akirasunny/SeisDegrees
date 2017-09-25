@@ -31,9 +31,15 @@ class Index extends Component {
   constructor() {
     super();
     this.state = {
+      login: false
     };
     this.hideFixedMenu = this.hideFixedMenu.bind(this);
     this.showFixedMenu = this.showFixedMenu.bind(this);
+    this.handleLogin = this.handleLogin.bind(this);
+  }
+
+  handleLogin() {
+    this.setState({ login: false });
   }
 
   hideFixedMenu() {
@@ -66,13 +72,13 @@ class Index extends Component {
               <Link to="/"><Menu.Item as='a'>Notifications</Menu.Item></Link>
               <Link to="/"><Menu.Item as='a'>Messages</Menu.Item></Link>
               <Menu.Item position='right'>
-                <Login />
-                <Signup />
+                <Login handleLogin={this.handleLogin} />
+                <Signup handleLogin={this.handleLogin} />
               </Menu.Item>
             </Menu>
           </Container>
         </Segment>
-        
+
           <Segment
             inverted
             textAlign='center'
