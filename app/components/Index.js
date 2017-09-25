@@ -39,7 +39,7 @@ class Index extends Component {
   }
 
   handleLogin() {
-    this.setState({ login: false });
+    this.setState({ login: true });
   }
 
   hideFixedMenu() {
@@ -72,8 +72,10 @@ class Index extends Component {
               <Link to="/"><Menu.Item as='a'>Notifications</Menu.Item></Link>
               <Link to="/"><Menu.Item as='a'>Messages</Menu.Item></Link>
               <Menu.Item position='right'>
-                <Login handleLogin={this.handleLogin} />
-                <Signup handleLogin={this.handleLogin} />
+                {!this.state.login && 
+                  <Login handleLogin={this.handleLogin} />
+                  <Signup handleLogin={this.handleLogin} />
+                }
               </Menu.Item>
             </Menu>
           </Container>
