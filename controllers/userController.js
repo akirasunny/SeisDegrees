@@ -46,9 +46,9 @@ module.exports = {
 
                     // Return true/false if successful/unsuccessful
                     if (response) {
-                        res.send(true);
+                        res.send(user);
                     } else {
-                        res.send(false);
+                        res.send(user);
                     }
 
                 })
