@@ -49,7 +49,7 @@ class Index extends Component {
       var array = document.cookie.split(";").map(function(data) {
         return data.substring(data.indexOf("=") + 1);
       });
-      this.setState({ login: array[0], username: array[1] });
+      this.setState({ login: array[0], username: array[1], page: "Profile" });
     }
   }
 
