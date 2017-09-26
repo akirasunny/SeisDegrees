@@ -15,13 +15,18 @@ var PostSchema = new Schema({
     type: String,
     required: true
   },
-
+  img: [{
+    type: String
+  }],
+  location: {
+    type: String,
+    required: true
+  },
   owner: {
     type: Schema.Types.ObjectId,
     ref: "User",
     required: true
   },
-
   tagged: [{
   	type: Schema.Types.ObjectId,
     ref: "User"
