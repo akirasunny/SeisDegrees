@@ -6,6 +6,7 @@ import {
 import Timeline from "./Timeline";
 import Locations from "./Locations";
 import Friends from "./Friends";
+import axios from "axios";
 
 const menuStyle = {
   border: 'none',
@@ -85,6 +86,14 @@ export default class StickyLayout extends Component {
     this.handleCard = this.handleCard.bind(this);
   }
 
+  componentWillMount() {
+    axios.get("/api/Users/" + this.props.id).then(res => {
+      console.log(res.data);
+      this.setState({
+        id: this.props.id,
+      })
+    })
+  }
   handleCard(card) {
     this.setState({ currentcard: card.currentTarget.textContent });
   }
@@ -147,9 +156,9 @@ export default class StickyLayout extends Component {
               <Menu.Item>
                 <Image size='small' src='#' alt="profile pic"/>
               </Menu.Item>
-              {this.state.currentcard === "Timeline" ? <Menu.Item header onClick={this.handleCard} value="Timeline">Timeline</Menu.Item> : <Menu.Item as="a" onClick={this.handleCard} value="Timeline">Timeline</Menu.Item>}
-              {this.state.currentcard === "Locations"? <Menu.Item header onClick={this.handleCard} value="Locations">Locations</Menu.Item> : <Menu.Item as='a' onClick={this.handleCard} value="Locations">Locations</Menu.Item>}
-              {this.state.currentcard === "Friends" ? <Menu.Item header onClick={this.handleCard} value="Friends">Friends</Menu.Item> : <Menu.Item as='a' onClick={this.handleCard} value="Friends">Friends</Menu.Item>}
+              {this.state.currentcard === "Timeline" ? <Menu.Item header onClick={this.handleCard} value="Timeline">Timeline</Menu.Item> : <Menu.Item onClick={this.handleCard} value="Timeline">Timeline</Menu.Item>}
+              {this.state.currentcard === "Locations"? <Menu.Item header onClick={this.handleCard} value="Locations">Locations</Menu.Item> : <Menu.Item onClick={this.handleCard} value="Locations">Locations</Menu.Item>}
+              {this.state.currentcard === "Friends" ? <Menu.Item header onClick={this.handleCard} value="Friends">Friends</Menu.Item> : <Menu.Item onClick={this.handleCard} value="Friends">Friends</Menu.Item>}
 
               <Menu.Menu position='right'>
                 <Dropdown pointing className='link item'>
