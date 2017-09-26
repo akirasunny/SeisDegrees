@@ -49,7 +49,7 @@ class Index extends Component {
       var array = document.cookie.split(";").map(function(data) {
         return data.substring(data.indexOf("=") + 1);
       });
-      this.setState({ login: array[0], username: array[1] });
+      this.setState({ login: array[0], username: array[1], page: "Profile" });
     }
   }
 
@@ -64,6 +64,8 @@ class Index extends Component {
   handleLogout() {
     delete this.state.login;
     delete this.state.username;
+    document.cookie = "userId=''; expires=Thu, 18 Dec 2002 12:00:00 UTC";
+    document.cookie = "username=''; expires=Thu, 18 Dec 2002 12:00:00 UTC";
     this.setState({ page: "Home"})
   }
 
