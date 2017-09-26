@@ -84,38 +84,42 @@ class Index extends Component {
     const { visible } = this.state;
     return (
       <div>
-        { visible ? <FixedMenu /> : null }
+        {(this.state.login && this.state.page === "Profile") ?
+        <Profile id={this.state.login} username={this.state.username} handleLogout={this.handleLogout}/> :
+          <div>
+          { visible ? <FixedMenu /> : null }
 
-        <Visibility
-          onBottomPassed={this.showFixedMenu}
-          onBottomVisible={this.hideFixedMenu}
-          once={false}
-        >
-        <Segment
-          inverted
-          textAlign='center'
-          style={{padding: '1em 0em' }}
-          vertical
-        >
-          <Container>
-            <Menu inverted pointing secondary size='large'>
-              {this.state.page === "Home" ? <Link to="/"><Menu.Item active onClick={this.handlePage}>Home</Menu.Item></Link> : <Link to="/"><Menu.Item onClick={this.handlePage}>Home</Menu.Item></Link>}
-              {this.state.page === "Discover" ? <Link to="/"><Menu.Item active onClick={this.handlePage}>Discover</Menu.Item></Link> : <Link to="/"><Menu.Item onClick={this.handlePage}>Discover</Menu.Item></Link>}
-              {this.state.page === "Notifications" ? <Link to="/"><Menu.Item active onClick={this.handlePage}>Notifications</Menu.Item></Link> : <Link to="/"><Menu.Item onClick={this.handlePage}>Notifications</Menu.Item></Link>}
-              {this.state.page === "Messages" ? <Link to="/"><Menu.Item active onClick={this.handlePage}>Messages</Menu.Item></Link> : <Link to="/"><Menu.Item onClick={this.handlePage}>Messages</Menu.Item></Link>}
-              <Menu.Item position='right'>
-                  {!this.state.login && 
-                    <Signup handleLogin={this.handleLogin} />
-                  }
-                  {this.state.login &&
-                    <Logout username={this.state.username} handleLogout={this.handleLogout} showprofile={this.showprofile}/>}
-              </Menu.Item>
-            </Menu>
-          </Container>
-        </Segment>
-        </Visibility>
-        {this.state.page === "Home" && <Home />}
-        {(this.state.login && this.state.page === "Profile") && <Profile id={this.state.login} username={this.state.username}/>}
+          <Visibility
+            onBottomPassed={this.showFixedMenu}
+            onBottomVisible={this.hideFixedMenu}
+            once={false}
+          >
+          <Segment
+            inverted
+            textAlign='center'
+            style={{padding: '1em 0em' }}
+            vertical
+          >
+            <Container>
+              <Menu inverted pointing secondary size='large'>
+                {this.state.page === "Home" ? <Link to="/"><Menu.Item active onClick={this.handlePage}>Home</Menu.Item></Link> : <Link to="/"><Menu.Item onClick={this.handlePage}>Home</Menu.Item></Link>}
+                {this.state.page === "Discover" ? <Link to="/"><Menu.Item active onClick={this.handlePage}>Discover</Menu.Item></Link> : <Link to="/"><Menu.Item onClick={this.handlePage}>Discover</Menu.Item></Link>}
+                {this.state.page === "Notifications" ? <Link to="/"><Menu.Item active onClick={this.handlePage}>Notifications</Menu.Item></Link> : <Link to="/"><Menu.Item onClick={this.handlePage}>Notifications</Menu.Item></Link>}
+                {this.state.page === "Messages" ? <Link to="/"><Menu.Item active onClick={this.handlePage}>Messages</Menu.Item></Link> : <Link to="/"><Menu.Item onClick={this.handlePage}>Messages</Menu.Item></Link>}
+                <Menu.Item position='right'>
+                    {!this.state.login && 
+                      <Signup handleLogin={this.handleLogin} />
+                    }
+                    {this.state.login &&
+                      <Logout username={this.state.username} handleLogout={this.handleLogout} showprofile={this.showprofile}/>}
+                </Menu.Item>
+              </Menu>
+            </Container>
+          </Segment>
+          </Visibility>
+          {this.state.page === "Home" && <Home />}
+          </div>
+        }
       </div>
     )
   }
