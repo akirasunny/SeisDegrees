@@ -5,9 +5,9 @@ import axios from "axios";
 
 var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-function writecookie(id, name) {
+function writecookie(entry, name) {
   var expires = "; expires=Thu, 18 Dec 2020 12:00:00 UTC";
-  document.cookie = "userId=" + id + "; username=" + name + expires;
+  document.cookie = name + "=" + entry + expires;
 };
 
 class Signup extends Component {
@@ -60,14 +60,10 @@ class Signup extends Component {
         password: state.password 
       };
       axios.post("/api/User", obj).then(res => {
-        if (!res.data) {
-          return (alert("Invalid username or password."));
-        }
-        else {
-          writecookie(res.data._id, res.data.username);
-          this.props.handleLogin(res.data._id, res.data.username);
-          this.handleOpen();
-        }
+        writecookie(res.data._id, "userId");
+        writecookie(res.data.username, "username");
+        this.props.handleLogin(res.data._id, res.data.username);
+        this.handleOpen();
       });
     }
   }
@@ -79,10 +75,16 @@ class Signup extends Component {
       password: state.password
     };
     axios.post("/api/User/Login", obj).then(res => {
-      writecookie(res.data._id, res.data.username);
-      this.props.handleLogin(res.data._id, res.data.username);
-      this.handleOpen();
-    })
+     if (!res.data) {
+      return (alert("Invalid username or password."));
+     }
+      else {
+        writecookie(res.data._id, "userId");
+        writecookie(res.data.username, "username");
+        this.props.handleLogin(res.data._id, res.data.username);
+        this.handleOpen();
+      }
+    });
   }
 
   render() {
