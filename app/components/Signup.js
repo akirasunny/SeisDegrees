@@ -5,6 +5,11 @@ import axios from "axios";
 
 var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
+function writecookie(entry, name) {
+  var expires = "; expires=Thu, 18 Dec 2020 12:00:00 UTC";
+  document.cookie = name + "=" + entry + expires;
+};
+
 class Signup extends Component {
   constructor() {
     super();
@@ -55,14 +60,10 @@ class Signup extends Component {
         password: state.password
       };
       axios.post("/api/User", obj).then(res => {
-        if (!res.data) {
-          return (alert("Invalid username or password."));
-        }
-        else {
-          document.cookie = `userId = ${res.data._id}; expires=Thu, 18 Dec 2020 12:00:00 UTC`;
-          this.props.handleLogin(res.data._id, res.data.username);
-          this.handleOpen();
-        }
+        writecookie(res.data._id, "userId");
+        writecookie(res.data.username, "username");
+        this.props.handleLogin(res.data._id, res.data.username);
+        this.handleOpen();
       });
     }
   }
@@ -74,11 +75,16 @@ class Signup extends Component {
       password: state.password
     };
     axios.post("/api/User/Login", obj).then(res => {
-      document.cookie = `userId = ${res.data._id}; expires=Thu, 18 Dec 2020 12:00:00 UTC`;
-      document.cookie = `username = ${res.data.username}; expires=Thu, 18 Dec 2020 12:00:00 UTC`
-      this.props.handleLogin(res.data._id, res.data.username);
-      this.handleOpen();
-    })
+     if (!res.data) {
+      return (alert("Invalid username or password."));
+     }
+      else {
+        writecookie(res.data._id, "userId");
+        writecookie(res.data.username, "username");
+        this.props.handleLogin(res.data._id, res.data.username);
+        this.handleOpen();
+      }
+    });
   }
 
   render() {
