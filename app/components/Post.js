@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import {
   Form, TextArea, Container, Divider, Dropdown, Grid, Header, Icon, Image, List, Menu, Segment, Button,
 } from 'semantic-ui-react';
-import ReactCoreImageUpload  from 'react-core-image-upload';
 
 class Post extends Component {
 	constructor() {
