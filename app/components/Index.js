@@ -17,6 +17,7 @@ import Login from "./Login";
 import Signup from "./Signup";
 import Home from "./Home";
 import Profile from "./Profile";
+import Logout from "./Logout";
 
 const FixedMenu = () => (
   <Menu inverted fixed='top' size='large'>
@@ -39,17 +40,31 @@ class Index extends Component {
     this.showFixedMenu = this.showFixedMenu.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
     this.handlePage = this.handlePage.bind(this);
+    this.handleLogout = this.handleLogout.bind(this);
+    this.showprofile = this.showprofile.bind(this);
   }
 
   componentWillMount() {
     if (document.cookie) {
-      var id = document.cookie.substring(document.cookie.indexOf("=") + 1);
-      this.setState({ login: id, page: "Profile" });
+      var array = document.cookie.split(";").map(function(data) {
+        return data.substring(data.indexOf("=") + 1);
+      });
+      this.setState({ login: array[0], username: array[1] });
     }
   }
 
-  handleLogin(userid) {
-    this.setState({ login: userid, page: "Profile" });
+  handleLogin(userid, username) {
+    this.setState({ login: userid, username: username, page: "Profile" });
+  }
+
+  showprofile() {
+    this.setState({ page: "Profile" });
+  }
+
+  handleLogout() {
+    delete this.state.login;
+    delete this.state.username;
+    this.setState({ page: "Home"})
   }
 
   handlePage(page) {
@@ -90,13 +105,15 @@ class Index extends Component {
                   {!this.state.login && 
                     <Signup handleLogin={this.handleLogin} />
                   }
+                  {this.state.login &&
+                    <Logout username={this.state.username} handleLogout={this.handleLogout} showprofile={this.showprofile}/>}
               </Menu.Item>
             </Menu>
           </Container>
         </Segment>
         </Visibility>
         {this.state.page === "Home" && <Home />}
-        {this.state.login && <Profile id={this.state.login}/>}
+        {(this.state.login && this.state.page === "Profile") && <Profile id={this.state.login} username={this.state.username}/>}
       </div>
     )
   }

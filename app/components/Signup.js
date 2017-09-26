@@ -55,9 +55,14 @@ class Signup extends Component {
         password: state.password 
       };
       axios.post("/api/User", obj).then(res => {
-        document.cookie = `userId = ${res.data._id}; expires=Thu, 18 Dec 2020 12:00:00 UTC`;
-        this.props.handleLogin(res.data._id);
-        this.handleOpen();
+        if (!res.data) {
+          return (alert("Invalid username or password."));
+        }
+        else {
+          document.cookie = `userId = ${res.data._id}; expires=Thu, 18 Dec 2020 12:00:00 UTC`;
+          this.props.handleLogin(res.data._id, res.data.username);
+          this.handleOpen();
+        }
       });
     }
   }
@@ -70,14 +75,16 @@ class Signup extends Component {
     };
     axios.post("/api/User/Login", obj).then(res => {
       document.cookie = `userId = ${res.data._id}; expires=Thu, 18 Dec 2020 12:00:00 UTC`;
-      this.props.handleLogin(res.data._id);
+      document.cookie = `username = ${res.data.username}; expires=Thu, 18 Dec 2020 12:00:00 UTC`
+      this.props.handleLogin(res.data._id, res.data.username);
       this.handleOpen();
     })
   }
 
   render() {
     return (
-      <Modal open={this.state.open} trigger={<Button as='a' inverted style={{ marginLeft: '0.5em' }} onClick={this.handleOpen}>Log in / Sign Up</Button>}> <Icon key="close" name="close" onClick={this.handleOpen} />
+      <Modal open={this.state.open} trigger={<Button inverted style={{ marginLeft: '0.5em' }} onClick={this.handleOpen}>Log in / Sign Up</Button>}>
+      <Icon key="close" name="close" onClick={this.handleOpen} />
         <Grid
           textAlign='center'
           style={{ height: '100%', padding: 50 }}

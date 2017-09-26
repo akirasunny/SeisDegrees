@@ -48,7 +48,7 @@ module.exports = {
                     if (response) {
                         res.send(user);
                     } else {
-                        res.send(user);
+                        res.send(false);
                     }
 
                 })
