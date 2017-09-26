@@ -21,11 +21,8 @@ class Post extends Component {
 			<TextArea placeholder="What's new?" id="body" style={{ minHeight: 100 }} />
 			</Form>
 			<Container style={{ padding: 10 }}>
-			<Dropdown>
-				<Icon name="photo" size="large"/>
-				<Dropdown.Menu>
-				</Dropdown.Menu>
-			</Dropdown>
+
+			<Icon name="photo" size="large"/>
 			
 			<Icon name="marker" size="large"/>
 
