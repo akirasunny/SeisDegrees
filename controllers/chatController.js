@@ -8,17 +8,36 @@ module.exports = {
         // Create chatroom name and add to request body
         req.body.room = req.body.owners.sort().join().replace(/,/g, "&");
 
-        // Create new Chat w/ data from front-end
-        var newChat = new Chat(req.body);
-        // Save the new Chat to mongoose
-        newChat.save(function(error, chat) {
+        // Find all Users
+        Chat.findOne({ room: req.body.room }, function(error, chat) {
             // Send any errors to the browser
+            console.log(chat)
             if (error) {
                 res.send(error);
             }
-            // Otherwise send the new Chat to the browser.
+            // Or, send our results to the browser
             else {
-                res.send(chat);
+                if (chat) {
+                    console.log("Chat already exists!");
+                    res.send(chat);
+
+                } else {
+                    console.log("Creating new Chat!");
+                    // Create new Chat w/ data from front-end
+                    var newChat = new Chat(req.body);
+                    // Save the new Chat to mongoose
+                    newChat.save(function(error, chat) {
+                        // Send any errors to the browser
+                        if (error) {
+                            res.send(error);
+                        }
+                        // Otherwise send the new Chat to the browser.
+                        else {
+                            res.send(chat);
+                        }
+                    });
+
+                }
             }
         });
 
@@ -27,7 +46,7 @@ module.exports = {
 
     updateLog: function(req, res) {
 
-    	// Add userId to request body
+        // Add userId to request body
         req.body.user = req.params.userId
 
         // Create new Message w/ data from front-end
@@ -115,7 +134,7 @@ module.exports = {
     oneChat: function(req, res) {
 
         // Find one Chat by their id and populate messages, members, and owners arrays. (Note: need to specify path)
-        Chat.findById(req.params.id).populate(["messages", {path:"members",model:"User"}, {path:"owners",model:"User"}])
+        Chat.findById(req.params.id).populate(["messages", { path: "members", model: "User" }, { path: "owners", model: "User" }])
             // Now, execute that query
             .exec(function(error, chat) {
                 // Send any errors to the browser
