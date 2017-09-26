@@ -46,12 +46,11 @@ class Signup extends Component {
       var obj = {
         username: state.username,
         email: state.email,
-        password: state.password 
+        password: state.password
       };
       axios.post("/api/User", obj).then(res => {
         this.props.handleLogin();
         localStorage.setItem("userid", res.data._id);
-        window.location = "/";
       });
     }
   }
