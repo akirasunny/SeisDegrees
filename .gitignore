@@ -1,4 +1,11 @@
 .DS_Store
 node_modules
+<<<<<<< HEAD
 package-lock.json
 bundle.js
+=======
+<<<<<<< HEAD
+=======
+bundle.js
+>>>>>>> a58c01bd3a22b69bfb4d08fb3651d753236390f6
+>>>>>>> stephen1

@@ -106,7 +106,7 @@ class Index extends Component {
                 {this.state.page === "Notifications" ? <Link to="/"><Menu.Item active onClick={this.handlePage}>Notifications</Menu.Item></Link> : <Link to="/"><Menu.Item onClick={this.handlePage}>Notifications</Menu.Item></Link>}
                 {this.state.page === "Messages" ? <Link to="/"><Menu.Item active onClick={this.handlePage}>Messages</Menu.Item></Link> : <Link to="/"><Menu.Item onClick={this.handlePage}>Messages</Menu.Item></Link>}
                 <Menu.Item position='right'>
-                    {!this.state.login && 
+                    {!this.state.login &&
                       <Signup handleLogin={this.handleLogin} />
                     }
                 </Menu.Item>
