@@ -20,7 +20,6 @@ var PostSchema = new Schema({
   }],
   location: {
     type: String,
-    required: true
   },
   date: {
     type: Date,
