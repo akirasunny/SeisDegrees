@@ -24,6 +24,7 @@ var path = require("path");
 var userController = require("../controllers/userController");
 var postController = require("../controllers/postController");
 var chatController = require("../controllers/chatController");
+var commentController = require("../controllers/commentController");
 
 var router = new express.Router();
 
@@ -93,6 +94,24 @@ router.get("/Posts/:id", postController.onePost);
 
 // Get one Post and delete
 router.get("/Delete/Post/:id", postController.deletePost);
+
+
+// COMMENT
+
+// Create a new Comment
+router.post("/Comment", commentController.createComment);
+
+// Update a Comment
+router.post("/Comment/Update/:id", commentController.updateComment);
+
+// Get all Comment
+router.get("/Comments", commentController.allComments);
+
+// Get one Comment
+router.get("/Comments/:id", commentController.oneComment);
+
+// Get one Comment and delete
+router.get("/Delete/Comments/:id", commentController.deleteComment);
 
 
 // CHAT

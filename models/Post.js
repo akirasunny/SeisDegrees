@@ -34,6 +34,10 @@ var PostSchema = new Schema({
   tagged: [{
   	type: Schema.Types.ObjectId,
     ref: "User"
+  }],
+  comments: [{
+    type: Schema.Types.ObjectId,
+    ref: "Comment"
   }]
 
 });
