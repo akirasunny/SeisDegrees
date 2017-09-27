@@ -1,9 +1,23 @@
 var express = require("express");
+var randtoken = require("rand-token");
+var path = require("path");
 
 // Requiring our models
 
 var Post = require("../models/Post.js");
 var Chat = require("../models/Chat.js");
+var multer = require("multer");
+var storage = multer.diskStorage({
+	destination: function(req, file, callback) {
+		callback(null, "./public/assets/UserImages/");
+	},
+	filename: function(req, file, callback) {
+		filenameImg = randtoken.generate(12);
+		callback(null, filenameImg + path.extname(file.originalname));
+	}
+});
+var upload = multer({ storage: storage });
+var path = require("path");
 
 // Requiring our controllers
 
@@ -47,6 +61,8 @@ router.get("/Delete/User/:id", userController.deleteUser);
 
 
 // POST
+
+router.post("/Post/pic/:id", upload.any(), postController.uploadPic);
 
 // Create a new Post
 router.post("/Post", postController.createPost);

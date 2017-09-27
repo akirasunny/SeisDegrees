@@ -8,6 +8,7 @@ import Timeline from "./Timeline";
 import Locations from "./Locations";
 import Friends from "./Friends";
 import Logout from "./Logout";
+import Post from "./Post";
 import axios from "axios";
 
 export default class StickyLayout extends Component {
@@ -22,17 +23,22 @@ export default class StickyLayout extends Component {
       friends: []
     };
     this.handleCard = this.handleCard.bind(this);
+    this.showHome = this.showHome.bind(this);
   }
 
   componentWillMount() {
     axios.get("/api/Users/" + this.props.id).then(res => {
-      console.log(res.data);
       this.setState({
         id: res.data._id,
         username: res.data.username
       })
     })
   }
+
+  showHome() {
+    this.setState({ currentcard: "Home" });
+  }
+
   handleCard(card) {
     this.setState({ currentcard: card.currentTarget.textContent });
   }
@@ -64,23 +70,45 @@ export default class StickyLayout extends Component {
                 {this.state.currentcard === "Locations"? <Menu.Item header onClick={this.handleCard} value="Locations">Locations</Menu.Item> : <Menu.Item onClick={this.handleCard} value="Locations">Locations</Menu.Item>}
                 {this.state.currentcard === "Friends" ? <Menu.Item header onClick={this.handleCard} value="Friends">Friends</Menu.Item> : <Menu.Item onClick={this.handleCard} value="Friends">Friends</Menu.Item>}
                 <Menu.Item position='right' style={{ padding: 0 }}>
-                  <Logout username={this.state.username} handleLogout={this.props.handleLogout}/>
+                  <Logout username={this.state.username} handleLogout={this.props.handleLogout} showHome={this.showHome}/>
                 </Menu.Item>
           </Menu>
         </Container>
 
         </Segment>
 
-        <Container text style={{ minHeight: 500, padding: 20 }}>
-        {this.state.currentcard === "Home" &&
-         <Homeuser />}
-        {this.state.currentcard === "Timeline" &&
-          <Timeline timeline={this.state.timeline} />}
-        {this.state.currentcard === "Locations" &&
-          <Locations locations={this.state.locations} />}
-        {this.state.currentcard === "Friends" &&
-          <Friends friends={this.state.friends} />}
-        </Container>
+        <Grid>
+          <Grid.Row>
+            <Grid.Column width={3}>
+            </Grid.Column>
+            <Grid.Column width={7}>
+              <Post id={this.props.id} username={this.props.id}/>
+            </Grid.Column>
+            <Grid.Column width={6}>
+            </Grid.Column>
+          </Grid.Row>
+          
+          <Grid.Row>
+            <Grid.Column width={3}>
+            </Grid.Column>
+            <Grid.Column width={10}>
+            <Container style={{ minHeight: 500 }}>
+            {this.state.currentcard === "Home" &&
+             <Homeuser />}
+            {this.state.currentcard === "Timeline" &&
+              <Timeline timeline={this.state.timeline} />}
+            {this.state.currentcard === "Locations" &&
+              <Locations locations={this.state.locations} />}
+            {this.state.currentcard === "Friends" &&
+              <Friends friends={this.state.friends} />}
+            </Container>
+            </Grid.Column>
+
+            <Grid.Column width={3}>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+
         <Segment
           inverted
           style={{ margin: '5em 0em 0em', padding: '5em 0em' }}

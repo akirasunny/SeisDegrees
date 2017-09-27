@@ -41,7 +41,6 @@ class Index extends Component {
     this.handleLogin = this.handleLogin.bind(this);
     this.handlePage = this.handlePage.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
-    this.showprofile = this.showprofile.bind(this);
   }
 
   componentWillMount() {
@@ -57,9 +56,9 @@ class Index extends Component {
     this.setState({ login: userid, username: username, page: "Profile" });
   }
 
-  showprofile() {
-    this.setState({ page: "Profile" });
-  }
+  // showprofile() {
+  //   this.setState({ page: "Profile" });
+  // }
 
   handleLogout() {
     delete this.state.login;
@@ -85,7 +84,7 @@ class Index extends Component {
     return (
       <div>
         {(this.state.login && this.state.page === "Profile") ?
-        <Profile id={this.state.login} username={this.state.username} handleLogout={this.handleLogout}/> :
+        <Profile id={this.state.login} username={this.state.username} handleLogout={this.handleLogout} /> :
           <div>
           { visible ? <FixedMenu /> : null }
 
@@ -110,8 +109,6 @@ class Index extends Component {
                     {!this.state.login &&
                       <Signup handleLogin={this.handleLogin} />
                     }
-                    {this.state.login &&
-                      <Logout username={this.state.username} handleLogout={this.handleLogout} showprofile={this.showprofile}/>}
                 </Menu.Item>
               </Menu>
             </Container>
