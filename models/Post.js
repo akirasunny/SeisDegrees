@@ -22,6 +22,10 @@ var PostSchema = new Schema({
     type: String,
     required: true
   },
+  date: {
+    type: Date,
+    default: Date.now
+  },
   owner: {
     type: Schema.Types.ObjectId,
     ref: "User",

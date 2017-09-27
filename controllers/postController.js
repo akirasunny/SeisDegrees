@@ -1,8 +1,20 @@
 var Post = require("../models/Post.js");
 var User = require("../models/User.js");
+var path = require("path");
 
 module.exports = {
-
+    uploadPic: function(req, res, next) {
+        // console.log(req.params.id);
+        // console.log(req.files, "Files");
+        var files = req.files.slice(0, 3).filter(function(data) {
+            return (data.mimetype.indexOf("image") !== -1);
+        })
+        var images = files.map(function(data) {
+            // var ext = data.mimetype.substring(data.mimetype.indexOf("/") + 1);
+            return data.path;
+        });
+        res.send(images);
+    },
     createPost: function(req, res) {
 
         // Create new Post w/ data from browser
