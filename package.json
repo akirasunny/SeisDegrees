@@ -29,6 +29,7 @@
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-life-timeline": "^1.0.11",
+    "react-responsive-carousel": "^3.1.27",
     "react-router": "^2.4.1",
     "react-tooltip": "^3.3.0",
     "semantic-ui-react": "^0.73.1",
