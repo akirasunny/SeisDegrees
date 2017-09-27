@@ -27,14 +27,11 @@ export default class StickyLayout extends Component {
     this.showHome = this.showHome.bind(this);
   }
 
-  componentWillMount() {
-
-  }
-
   // This function serves our purpose of running the query to geolocate.
-  runGeocode(location) {
+  runGeocode(location,post) {
 
       /*console.log(location);*/
+      /*console.log(post);*/
 
       // Figure out the geolocation
       //"http://api.opencagedata.com/geocode/v1/json?query=" + location + "&pretty=1&key=" + this.state.geocodeAPI
@@ -45,11 +42,11 @@ export default class StickyLayout extends Component {
         // If get get a result, return that result's formatted address property
         if (response.data.results[0]) {
           var latLong = response.data.results[0].geometry.location;
-          var unitLoc = [location,latLong.lat,latLong.lng];
+          var unitLoc = [location,latLong.lat,latLong.lng,response.data.results[0].formatted_address,post];
           var newArray = this.state.locations.slice();
           newArray.push(unitLoc)
           this.setState({locations:newArray});
-          console.log(this.state.locations);
+          /*console.log(this.state.locations);*/
           // console.log(typeof latLong.lat)
           /*console.log(location,response.data.results[0].geometry.location);*/
           /*console.log(unitLoc);*/
@@ -57,7 +54,7 @@ export default class StickyLayout extends Component {
         }
         else{
           // If we don't get any results, return an empty string
-          console.log("Location not found.");
+          return alert("Location not found.");
         }
       }.bind(this));
   }
@@ -69,13 +66,13 @@ export default class StickyLayout extends Component {
         username: res.data.username
       });
 
-      console.log(res.data.posts);
+      /*console.log(res.data.posts);*/
       var posts = res.data.posts;
 
       posts.forEach(function(post, i) {
           /*console.log(post.location);*/
           var location = post.location;
-          this.runGeocode(location);
+          this.runGeocode(location,post);
       }.bind(this));
     })
   }

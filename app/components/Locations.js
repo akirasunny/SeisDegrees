@@ -4,6 +4,7 @@ import {
   Container, Divider, Dropdown, Grid, Header, Icon, Image, List, Menu, Segment, Visibility,
 } from 'semantic-ui-react';
 import axios from "axios";
+/*import Window from "./LocationsChildren/Window";*/
 
 
 class Locations extends Component {
@@ -17,7 +18,7 @@ class Locations extends Component {
             prevWindow: "",
             markersArr: [],
             lastMarkerPos: { lat: 34.048775, lng: -118.258615 },
-            locations: [
+/*            locations: [
                     ['Redondo Beach Station', 33.894577, -118.369161],
                     ['Douglas Station', 33.905288, -118.383232],
                     ['El Segundo Station', 33.916187, -118.386777],
@@ -32,7 +33,7 @@ class Locations extends Component {
                     ['Long Beach Boulevard Station', 33.925011, -118.210230],
                     ['Lakewood Boulevard Station', 33.913066, -118.140266],
                     ['Norwalk Station', 33.914116, -118.104085]
-                ],
+                ],*/
             latLongArr: props.locations
         };
     }
@@ -63,9 +64,27 @@ class Locations extends Component {
         this.populateMarkers(this.state.latLongArr,map);
     }
 
-/*    addInfo(locationName) {
-        this.setState({locationName});
-    }*/
+    addComments(post) {
+        var comment = "<ol>";
+        post.comments.forEach(function(commentId, i) {
+
+            comment += "<li>" + commentId.body + "</li><br>";
+
+        });
+        comment += "</ol>";
+        return comment;
+    }
+
+    addInfo(location) {
+        console.log(location[4]);
+        var comments = this.addComments(location[4]);
+        var info = "<h3>" + location[0] + "</h3>"
+        + "<hr>" + location[3]
+        + "<br><h4>POST: </h4>" + location[4].body
+        + "<br><h4>Comments: </h4>" + comments;
+        //"<h1>" + location[0] + "</h1>"
+        return info;
+    }
 
     // // This function serves our purpose of running the query to geolocate.
     // runGeocode(location) {
@@ -129,8 +148,8 @@ class Locations extends Component {
                         if (self.prevWindow != null){
                             self.prevWindow.close();
                         }
-                        /*self.addInfo(location[0]);*/
-                        infowindow.setContent(location[0]);
+                        /*console.log(self.addInfo(location[0]))*/
+                        infowindow.setContent(self.addInfo(location));
                         infowindow.open(map, marker);
                         self.prevWindow = infowindow;
                         

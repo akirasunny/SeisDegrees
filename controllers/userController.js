@@ -213,7 +213,13 @@ module.exports = {
         }
 
         // Find one User by their id and populate friends, requested, pending, posts, and tags arrays.
-        User.findOne(query).populate(["friends", "requested", "pending", "posts", "tags"])
+        User.findOne(query).populate(["friends", "requested", "pending",{
+            path: 'posts',
+            model: 'Post',
+            populate: {
+                path: 'comments',
+                model: 'Comment'           
+            }}, "tags"])
             // Now, execute that query
             .exec(function(error, user) {
                 // Send any errors to the browser
