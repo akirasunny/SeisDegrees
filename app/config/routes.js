@@ -16,8 +16,6 @@ import Member from "../components/Member";
 module.exports = (
 	<Router history={browserHistory}>
 		<Route path="/" component={Main}>
-			<Route path="/profile" component={Profile} />
-			<Route path="/member" component={Member} />
 			<IndexRoute component={Index} />
 		</Route>
 	</Router>

@@ -15,16 +15,29 @@ var PostSchema = new Schema({
     type: String,
     required: true
   },
-
+  img: [{
+    type: String
+  }],
+  location: {
+    type: String,
+    required: true
+  },
+  date: {
+    type: Date,
+    default: Date.now
+  },
   owner: {
     type: Schema.Types.ObjectId,
     ref: "User",
     required: true
   },
-
   tagged: [{
   	type: Schema.Types.ObjectId,
     ref: "User"
+  }],
+  comments: [{
+    type: Schema.Types.ObjectId,
+    ref: "Comment"
   }]
 
 });

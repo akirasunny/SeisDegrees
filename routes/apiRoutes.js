@@ -1,15 +1,30 @@
 var express = require("express");
+var randtoken = require("rand-token");
+var path = require("path");
 
 // Requiring our models
 
 var Post = require("../models/Post.js");
 var Chat = require("../models/Chat.js");
+var multer = require("multer");
+var storage = multer.diskStorage({
+	destination: function(req, file, callback) {
+		callback(null, "./public/assets/UserImages/");
+	},
+	filename: function(req, file, callback) {
+		filenameImg = randtoken.generate(12);
+		callback(null, filenameImg + path.extname(file.originalname));
+	}
+});
+var upload = multer({ storage: storage });
+var path = require("path");
 
 // Requiring our controllers
 
 var userController = require("../controllers/userController");
 var postController = require("../controllers/postController");
 var chatController = require("../controllers/chatController");
+var commentController = require("../controllers/commentController");
 
 var router = new express.Router();
 
@@ -57,6 +72,8 @@ router.get("/Delete/User/:id", userController.deleteUser);
 
 // POST
 
+router.post("/Post/pic/:id", upload.any(), postController.uploadPic);
+
 // Create a new Post
 router.post("/Post", postController.createPost);
 
@@ -77,6 +94,24 @@ router.get("/Posts/:id", postController.onePost);
 
 // Get one Post and delete
 router.get("/Delete/Post/:id", postController.deletePost);
+
+
+// COMMENT
+
+// Create a new Comment
+router.post("/Comment", commentController.createComment);
+
+// Update a Comment
+router.post("/Comment/Update/:id", commentController.updateComment);
+
+// Get all Comment
+router.get("/Comments", commentController.allComments);
+
+// Get one Comment
+router.get("/Comments/:id", commentController.oneComment);
+
+// Get one Comment and delete
+router.get("/Delete/Comments/:id", commentController.deleteComment);
 
 
 // CHAT
