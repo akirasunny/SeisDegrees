@@ -125,7 +125,7 @@ module.exports = {
     onePost: function(req, res) {
 
         // Find one Post by their id and populate tagged and owner arrays.
-        Post.findById(req.params.id).populate(["owner", "tagged"])
+        Post.findById(req.params.id).populate(["owner", "tagged","comments"])
             // Now, execute that query
             .exec(function(error, post) {
                 // Send any errors to the browser
