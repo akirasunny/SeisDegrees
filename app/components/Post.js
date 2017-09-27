@@ -2,10 +2,7 @@ import React, { Component } from 'react'
 import {
   Form, TextArea, Container, Divider, Dropdown, Grid, Header, Icon, Image, List, Menu, Segment, Button,
 } from 'semantic-ui-react';
-<<<<<<< HEAD
-=======
 import Images from "./Images";
->>>>>>> 7fcef43c7433cc174a5dbb4c8b1422d680d23e64
 
 class Post extends Component {
 	constructor() {
