@@ -15,13 +15,7 @@ export default class StickyLayout extends Component {
   constructor() {
     super();
     this.state = {
-      googleAPI:"AIzaSyBP3Xb01OSpLPBryCTei3tja3b8pU90oIg",
-      menuFixed: false,
-      overlayFixed: false,
       currentcard: "Home",
-      timeline: [],
-      locations: [],
-      friends: []
     };
     this.handleCard = this.handleCard.bind(this);
     this.showHome = this.showHome.bind(this);
@@ -124,7 +118,7 @@ export default class StickyLayout extends Component {
             <Grid.Column width={3}>
             </Grid.Column>
             <Grid.Column width={7}>
-              <Post id={this.props.id} username={this.props.id}/>
+              <Post id={this.props.id} username={this.props.username}/>
             </Grid.Column>
             <Grid.Column width={6}>
             </Grid.Column>
@@ -136,7 +130,7 @@ export default class StickyLayout extends Component {
             <Grid.Column width={10}>
             <Container style={{ minHeight: 500 }}>
             {this.state.currentcard === "Home" &&
-             <Homeuser />}
+             <Homeuser id={this.props.id} username={this.props.username}/>}
             {this.state.currentcard === "Timeline" &&
               <Timeline timeline={this.state.timeline} />}
             {this.state.currentcard === "Locations" &&
