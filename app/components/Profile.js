@@ -24,7 +24,6 @@ export default class StickyLayout extends Component {
     };
     this.handleCard = this.handleCard.bind(this);
     this.showHome = this.showHome.bind(this);
-    this.updateData = this.updateData.bind(this);
     this.showFriends = this.showFriends.bind(this);
     this.updateParent = this.updateParent.bind(this);
   }
