@@ -15,7 +15,14 @@ export default class StickyLayout extends Component {
   constructor() {
     super();
     this.state = {
+      googleAPI:"AIzaSyBP3Xb01OSpLPBryCTei3tja3b8pU90oIg",
+      menuFixed: false,
+      overlayFixed: false,
       currentcard: "Home",
+      timeline: [],
+      locations: [],
+      friends: [],
+      posts: []
     };
     this.handleCard = this.handleCard.bind(this);
     this.showHome = this.showHome.bind(this);
@@ -32,7 +39,7 @@ export default class StickyLayout extends Component {
       var queryURL = "https://maps.googleapis.com/maps/api/geocode/json?address=" + location + "&key=" + this.state.googleAPI;
       return axios.get(queryURL).then(function(response) {
           /*console.log(response);*/
-          /*console.log(response.data.results[0].geometry.location,"/",response.data.results[0].formatted_address);*/
+          console.log(response.data.results[0].geometry.location,"/",response.data.results[0].formatted_address);
         // If get get a result, return that result's formatted address property
         if (response.data.results[0]) {
           var latLong = response.data.results[0].geometry.location;
@@ -60,8 +67,9 @@ export default class StickyLayout extends Component {
         username: res.data.username
       });
 
-      /*console.log(res.data.posts);*/
+      console.log(res.data.posts);
       var posts = res.data.posts;
+      this.setState({posts:posts})
 
       posts.forEach(function(post, i) {
           /*console.log(post.location);*/
@@ -136,7 +144,7 @@ export default class StickyLayout extends Component {
             {this.state.currentcard === "Locations" &&
               <Locations locations={this.state.locations} />}
             {this.state.currentcard === "Friends" &&
-              <Friends friends={this.state.friends} />}
+              <Friends friends={this.state.friends} posts={this.state.posts} />}
             </Container>
             </Grid.Column>
 
