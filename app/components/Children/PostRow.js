@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {
-  Container, Comment, Divider, Dropdown, Grid, Header, Icon, Image, List, Menu, Segment, Visibility,
+  Container, Comment, Divider, Modal, Dropdown, Grid, Header, Icon, Image, List, Menu, Segment, Visibility,
 } from 'semantic-ui-react';
 import PostRowComment from "./Grandchildren/PostRowComment";
 
@@ -8,26 +8,33 @@ class PostRow extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-            post: props.post,
+			postId: props.post._id,
+            /*post: props.post,*/
             user: props.post.owner.username,
+            userId: props.post.owner._id,
             img: props.post.owner.img,
-            location: props.post.location,
-            comments: props.post.comments
+            open:false,
+            location: props.post.location/*,
+            comments: props.post.comments*/
         };
+        this.activateLasers = this.activateLasers.bind(this);
 	}
 
-	componentDidMount(){
-		console.log("Hey!",this.state.post);
-	}
+/*	componentWillReceiveProps(newProps) {
+
+		this.setState({post:newProps.post,comments:newProps.post.comments});
+
+	}*/
 
 	activateLasers(){
-		console.log("PEW! PEW!");
+		this.props.update();
+		this.props.modal(this.state);
 	}
 
 	renderComments(){
-		var comments = this.state.comments;
+		var comments = this.props.post.comments;
 		return comments.map(function(comment,i){
-			return(<PostRowComment comment={comment} key={i} activateLasers={this.activateLasers} />);
+			return(<PostRowComment comment={comment} key={i} update={this.props.update} modal={this.props.modal} />);
 		}.bind(this))
 	}
 
@@ -48,6 +55,17 @@ class PostRow extends Component {
 		       	<Comment.Group>
 		       		{this.renderComments()}
 		    	</Comment.Group>
+{/*		    	  <Modal open={this.state.open}>
+				    <Modal.Header>Select a Photo</Modal.Header>
+				    <Modal.Content image>
+				      <Image wrapped size='medium' src='/assets/images/avatar/large/rachel.png' />
+				      <Modal.Description>
+				        <Header>Default Profile Image</Header>
+				        <p>We've found the following gravatar image associated with your e-mail address.</p>
+				        <p>Is it okay to use this photo?</p>
+				      </Modal.Description>
+				    </Modal.Content>
+				  </Modal>*/}
 		    </Comment>
 		)
 	}

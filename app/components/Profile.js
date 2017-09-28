@@ -9,6 +9,7 @@ import Locations from "./Locations";
 import Friends from "./Friends";
 import Logout from "./Logout";
 import Post from "./Post";
+import MyPosts from "./MyPosts";
 import axios from "axios";
 
 export default class StickyLayout extends Component {
@@ -16,16 +17,13 @@ export default class StickyLayout extends Component {
     super();
     this.state = {
       googleAPI:"AIzaSyBP3Xb01OSpLPBryCTei3tja3b8pU90oIg",
-      menuFixed: false,
-      overlayFixed: false,
       currentcard: "Home",
-      timeline: [],
       locations: [],
-      friends: [],
-      posts: []
+      posts:[]
     };
     this.handleCard = this.handleCard.bind(this);
     this.showHome = this.showHome.bind(this);
+    this.updateData = this.updateData.bind(this);
   }
 
   // This function serves our purpose of running the query to geolocate.
@@ -61,10 +59,15 @@ export default class StickyLayout extends Component {
   }
 
   componentDidMount() {
+    this.updateData();
+  }
+
+  updateData() {
     axios.get("/api/Users/" + this.props.id).then(res => {
       this.setState({
         id: res.data._id,
-        username: res.data.username
+        username: res.data.username,
+        img: res.data.img
       });
 
       console.log(res.data.posts);
@@ -85,6 +88,7 @@ export default class StickyLayout extends Component {
 
   handleCard(card) {
     this.setState({ currentcard: card.currentTarget.textContent });
+    console.log(this.state.currentcard);
   }
 
   render() {
@@ -113,6 +117,7 @@ export default class StickyLayout extends Component {
                 {this.state.currentcard === "Timeline" ? <Menu.Item header onClick={this.handleCard} value="Timeline">Timeline</Menu.Item> : <Menu.Item onClick={this.handleCard} value="Timeline">Timeline</Menu.Item>}
                 {this.state.currentcard === "Locations"? <Menu.Item header onClick={this.handleCard} value="Locations">Locations</Menu.Item> : <Menu.Item onClick={this.handleCard} value="Locations">Locations</Menu.Item>}
                 {this.state.currentcard === "Friends" ? <Menu.Item header onClick={this.handleCard} value="Friends">Friends</Menu.Item> : <Menu.Item onClick={this.handleCard} value="Friends">Friends</Menu.Item>}
+                {this.state.currentcard === "My Posts" ? <Menu.Item header onClick={this.handleCard} value="Posts">My Posts</Menu.Item> : <Menu.Item onClick={this.handleCard} value="Posts">My Posts</Menu.Item>}
                 <Menu.Item position='right' style={{ padding: 0 }}>
                   <Logout username={this.state.username} handleLogout={this.props.handleLogout} showHome={this.showHome}/>
                 </Menu.Item>
@@ -138,13 +143,15 @@ export default class StickyLayout extends Component {
             <Grid.Column width={10}>
             <Container style={{ minHeight: 500 }}>
             {this.state.currentcard === "Home" &&
-             <Homeuser id={this.props.id} username={this.props.username}/>}
+              <Homeuser id={this.props.id} username={this.props.username} />}
             {this.state.currentcard === "Timeline" &&
               <Timeline timeline={this.state.timeline} />}
             {this.state.currentcard === "Locations" &&
               <Locations locations={this.state.locations} />}
             {this.state.currentcard === "Friends" &&
-              <Friends friends={this.state.friends} posts={this.state.posts} />}
+              <Friends friends={this.state.friends} />}
+            {this.state.currentcard === "My Posts" &&
+              <MyPosts posts={this.state.posts} update={this.updateData} />}
             </Container>
             </Grid.Column>
 

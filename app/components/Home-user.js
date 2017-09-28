@@ -14,7 +14,7 @@ class Homeuser extends Component {
 	
 	componentWillMount() {
 		axios.get("/api/Users/" + this.props.id).then(res => {
-			console.log(res.data.posts);
+			/*console.log(res.data.posts);*/
 			this.setState({ posts: res.data.posts });
 		})
 	}
@@ -23,7 +23,7 @@ class Homeuser extends Component {
 		return (
 			<Feed>
 				{this.state.posts.map((data, i) => {
-					console.log(data);
+					/*console.log(data);*/
 					return (
 						<Feed.Event key={i}>
 							<Feed.Content>

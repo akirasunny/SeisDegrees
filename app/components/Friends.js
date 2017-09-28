@@ -12,23 +12,24 @@ class Friends extends Component {
             posts: props.posts
         };
 	}
-/*
-	componentDidMount(){
-		console.log(this.state.posts);
-	}
-*/
+
+/*	componentDidUpdate(){
+		console.log("Update!",this.state.posts);
+		this.populatePosts();
+	}*/
+
 	populatePosts(){
 		var posts = this.state.posts;
 		return posts.map(function(post,i){
-			return(<PostRow post={post} key={i} />);
-		})
+			return(<PostRow post={post} key={i} update={this.props.update} />);
+		}.bind(this));
 	}
 
 	render() {
 		return (
 			<Comment.Group size="large">
-				<Header as='h3' dividing>My Posts</Header>
-				{this.populatePosts()}
+				<Header as='h3' dividing>{/*My Posts*/}</Header>
+				{/*this.populatePosts()*/}
 			</Comment.Group>
 		)
 	}
