@@ -126,7 +126,7 @@ router.get("/Chat/:chatId/Remove/:userId", chatController.removeMember);
 router.get("/Chats", chatController.allChats);
 
 // Get one Chat
-router.get("/Chats/:id", chatController.oneChat);
+router.get("/Chats/:id1/:id2", chatController.oneChat);
 
 // Get one Chat and delete
 router.get("/Delete/Chat/:id", chatController.deleteChat);

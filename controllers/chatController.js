@@ -133,8 +133,14 @@ module.exports = {
 
     oneChat: function(req, res) {
 
+        var users = [req.params.id1,req.params.id2];
+        var query = {};
+        
+        // Create chatroom name and add to request body
+        query.room = users.sort().join().replace(/,/g, "&");
+
         // Find one Chat by their id and populate messages, members, and owners arrays. (Note: need to specify path)
-        Chat.findById(req.params.id).populate(["messages", { path: "members", model: "User" }, { path: "owners", model: "User" }])
+        Chat.find(query).populate(["messages", { path: "members", model: "User" }, { path: "owners", model: "User" }])
             // Now, execute that query
             .exec(function(error, chat) {
                 // Send any errors to the browser

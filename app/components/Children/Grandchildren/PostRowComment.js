@@ -7,10 +7,18 @@ class PostRowComment extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			id: props.comment._id,
             body: props.comment.body,
             user: props.comment.owner.username,
+            userId: props.comment.owner._id,
             img: props.comment.owner.img
         };
+        this.activateLasers = this.activateLasers.bind(this);
+	}
+
+	activateLasers(){
+		this.props.update();
+		this.props.modal(this.state);
 	}
 
 	render() {
@@ -26,7 +34,7 @@ class PostRowComment extends Component {
 	              {this.state.body}
 	            </Comment.Text>
 	            <Comment.Actions>
-	              <Comment.Action onClick={this.props.activateLasers}>Reply</Comment.Action>
+	              <Comment.Action onClick={this.activateLasers}>Reply</Comment.Action>
 	            </Comment.Actions>
 	          </Comment.Content>
 	        </Comment>

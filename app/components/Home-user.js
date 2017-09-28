@@ -14,7 +14,6 @@ class Homeuser extends Component {
 	}
 	
 	componentWillMount() {
-
 	axios.get("/api/Users/" + this.props.id).then(res => {
 			console.log(res.data.posts);
 			this.setState({ posts: res.data.posts });

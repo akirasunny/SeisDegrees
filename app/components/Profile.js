@@ -9,6 +9,7 @@ import Locations from "./Locations";
 import Friends from "./Friends";
 import Logout from "./Logout";
 import Post from "./Post";
+import MyPosts from "./MyPosts";
 import Settings from "./Settings";
 import axios from "axios";
 
@@ -17,16 +18,13 @@ export default class StickyLayout extends Component {
     super();
     this.state = {
       googleAPI:"AIzaSyBP3Xb01OSpLPBryCTei3tja3b8pU90oIg",
-      menuFixed: false,
-      overlayFixed: false,
       currentcard: "Home",
-      timeline: [],
       locations: [],
-      friends: [],
-      posts: []
+      posts:[]
     };
     this.handleCard = this.handleCard.bind(this);
     this.showHome = this.showHome.bind(this);
+    this.updateData = this.updateData.bind(this);
     this.showFriends = this.showFriends.bind(this);
     this.updateParent = this.updateParent.bind(this);
   }
@@ -102,6 +100,7 @@ export default class StickyLayout extends Component {
 
   handleCard(card) {
     this.setState({ currentcard: card.currentTarget.textContent });
+    console.log(this.state.currentcard);
   }
 
   render() {
@@ -130,6 +129,7 @@ export default class StickyLayout extends Component {
                 {this.state.currentcard === "Timeline" ? <Menu.Item header onClick={this.handleCard} value="Timeline">Timeline</Menu.Item> : <Menu.Item onClick={this.handleCard} value="Timeline">Timeline</Menu.Item>}
                 {this.state.currentcard === "Locations"? <Menu.Item header onClick={this.handleCard} value="Locations">Locations</Menu.Item> : <Menu.Item onClick={this.handleCard} value="Locations">Locations</Menu.Item>}
                 {this.state.currentcard === "Friends" ? <Menu.Item header onClick={this.handleCard} value="Friends">Friends</Menu.Item> : <Menu.Item onClick={this.handleCard} value="Friends">Friends</Menu.Item>}
+                {this.state.currentcard === "My Posts" ? <Menu.Item header onClick={this.handleCard} value="Posts">My Posts</Menu.Item> : <Menu.Item onClick={this.handleCard} value="Posts">My Posts</Menu.Item>}
                 {this.state.currentcard === "Settings" ? <Menu.Item header onClick={this.handleCard} value="Settings">Settings</Menu.Item> : <Menu.Item onClick={this.handleCard} value="Settings">Settings</Menu.Item>}
                 <Menu.Item position='right' style={{ padding: 0 }}>
                   <Logout username={this.state.username} id={this.state.id} handleLogout={this.props.handleLogout} showHome={this.showHome} img={this.state.img}/>
@@ -156,13 +156,12 @@ export default class StickyLayout extends Component {
             <Grid.Column width={7}>
             <Container style={{ minHeight: 500 }}>
             {this.state.currentcard === "Home" &&
-             <Homeuser id={this.props.id} username={this.props.username}/>}
+              <Homeuser id={this.props.id} username={this.props.username} />}
             {this.state.currentcard === "Timeline" &&
               <Timeline />}
             {this.state.currentcard === "Locations" &&
               <Locations />}
-            {this.state.currentcard === "Friends" &&
-      
+            {this.state.currentcard === "Friends" &&      
               <Friends
                 updateParent={this.updateParent}
                 showFriends={this.showFriends}
@@ -172,9 +171,11 @@ export default class StickyLayout extends Component {
                 pending={this.state.pending}
                 friends={this.state.friends}
                 users={this.state.users}/>}
+            {this.state.currentcard === "My Posts" &&
+              <MyPosts posts={this.state.posts} update={this.updateParent} />}
             {this.state.currentcard === "Settings" &&
               <Settings showHome={this.showHome} id={this.props.id} username={this.props.username} img={this.state.img}/>}
-
+      
             </Container>
             </Grid.Column>
 
