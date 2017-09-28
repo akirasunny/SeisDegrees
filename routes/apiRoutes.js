@@ -24,17 +24,9 @@ var path = require("path");
 var userController = require("../controllers/userController");
 var postController = require("../controllers/postController");
 var chatController = require("../controllers/chatController");
+var commentController = require("../controllers/commentController");
 
 var router = new express.Router();
-
-/*// Get all articles (or optionally a specific article with an id)
-router.get("/articles/:id?", articlesController.index);
-// Create a new article using data passed in req.body
-router.post("/articles", articlesController.create);
-// Update an existing article with a speicified id param, using data in req.body
-router.patch("/articles/:id", articlesController.update);
-// Delete a specific article using the id in req.params.id
-router.delete("/articles/:id", articlesController.destroy);*/
 
 // USER
 
@@ -89,13 +81,31 @@ router.get("/Post/:postId/Tag/:userId", postController.addTagged);
 router.get("/Post/:postId/Untag/:userId", postController.removeTagged);
 
 // Get all Posts
-router.get("/Posts/User/:id", postController.allPosts);
+router.get("/Posts", postController.allPosts);
 
 // Get one Post
 router.get("/Posts/:id", postController.onePost);
 
 // Get one Post and delete
 router.get("/Delete/Post/:id", postController.deletePost);
+
+
+// COMMENT
+
+// Create a new Comment
+router.post("/Comment", commentController.createComment);
+
+// Update a Comment
+router.post("/Comment/Update/:id", commentController.updateComment);
+
+// Get all Comment
+router.get("/Comments", commentController.allComments);
+
+// Get one Comment
+router.get("/Comments/:id", commentController.oneComment);
+
+// Get one Comment and delete
+router.get("/Delete/Comments/:id", commentController.deleteComment);
 
 
 // CHAT

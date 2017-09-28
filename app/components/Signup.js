@@ -57,7 +57,7 @@ class Signup extends Component {
       var obj = {
         username: state.username,
         email: state.email,
-        password: state.password 
+        password: state.password
       };
       axios.post("/api/User", obj).then(res => {
         writecookie(res.data._id, "userId");

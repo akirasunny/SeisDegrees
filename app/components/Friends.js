@@ -6,10 +6,10 @@ import Pending from "./Pending";
 import MyFriends from "./MyFriends";
 import axios from "axios";
 
+
 class Friends extends Component {
 	constructor(props) {
 		super(props);
-
 		this.addFriend = this.addFriend.bind(this);
 	}
 

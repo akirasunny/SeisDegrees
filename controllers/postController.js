@@ -123,9 +123,20 @@ module.exports = {
 
     allPosts: function(req, res) {
 
-        // Find all Posts
-        Post.find({ owner: req.params.id }, null, {sort: {date: -1}}).populate(["owner", "tagged"])
+/*        // Find all Posts
+        Post.find({ owner: req.params.id }).populate(["owner", "tagged"])
             .exec(function(error, all) {
+                // Send any errors to the browser
+                if (error) {
+                    res.send(error);
+                }
+                // Or, send our results to the browser
+                else {
+                    res.send(all);
+                }
+            });*/
+                    // Find all Posts
+        Post.find({},function(error, all) {
                 // Send any errors to the browser
                 if (error) {
                     res.send(error);
@@ -141,7 +152,7 @@ module.exports = {
     onePost: function(req, res) {
 
         // Find one Post by their id and populate tagged and owner arrays.
-        Post.findById(req.params.id).populate(["owner", "tagged"])
+        Post.findById(req.params.id).populate(["owner", "tagged","comments"])
             // Now, execute that query
             .exec(function(error, post) {
                 // Send any errors to the browser
