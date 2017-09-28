@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
 import {
-  Container, Divider, Dropdown, Grid, Header, Icon, Image, List, Menu, Segment, Visibility,
+  Container, Divider, Dropdown, Grid, Header, Icon, Image, List, Menu, Segment, Visibility, Sidebar
 } from 'semantic-ui-react';
 import Homeuser from "./Home-user";
 import Timeline from "./Timeline";
@@ -16,6 +16,8 @@ export default class StickyLayout extends Component {
     super();
     this.state = {
       currentcard: "Home",
+      visible: true,
+      locations:[]
     };
     this.handleCard = this.handleCard.bind(this);
     this.showHome = this.showHome.bind(this);
@@ -91,11 +93,102 @@ export default class StickyLayout extends Component {
             background: #fff;
           }
         `}</style>
-        
-        <Segment
+
+        <Sidebar.Pushable as={Segment}>
+         <Sidebar
+           as={List}
+           animation='overlay'
+           width='thin'
+           direction='right'
+           visible={this.state.visible}
+           icon='labeled'
+           vertical
+           divided
+           relaxed
+         >
+           <Header inverted size='small' color='blue'><Icon name='users'/> Online Friends </Header>
+           <List.Item>
+             <List.Icon name='user circle outline' color='green'/>
+             <List.Content>
+               <List.Header>User 1</List.Header>
+               <List.Description>Online</List.Description>
+             </List.Content>
+           </List.Item>
+           <List.Item >
+             <List.Icon name='user circle outline' color='green'/>
+             <List.Content>
+               <List.Header>User 2</List.Header>
+               <List.Description>Online</List.Description>
+             </List.Content>
+           </List.Item>
+           <List.Item>
+             <List.Icon name='user circle outline' color='green'/>
+             <List.Content>
+               <List.Header>User 3</List.Header>
+               <List.Description>Online</List.Description>
+             </List.Content>
+           </List.Item>
+         </Sidebar>
+         <Sidebar.Pusher>
+           <Segment
+             inverted
+             textAlign='center'
+             style={{padding: '0' }}
+             vertical
+           >
+
+           <Container style={{ width: "100%" }}>
+             <Menu inverted style={{ paddingLeft: 20, paddingRight: 200 }}>
+                   {this.state.currentcard === "Home" ? <Menu.Item header onClick={this.handleCard} value="Home">Home</Menu.Item> : <Menu.Item onClick={this.handleCard} value="Home">Home</Menu.Item>}
+                   {this.state.currentcard === "Timeline" ? <Menu.Item header onClick={this.handleCard} value="Timeline">Timeline</Menu.Item> : <Menu.Item onClick={this.handleCard} value="Timeline">Timeline</Menu.Item>}
+                   {this.state.currentcard === "Locations"? <Menu.Item header onClick={this.handleCard} value="Locations">Locations</Menu.Item> : <Menu.Item onClick={this.handleCard} value="Locations">Locations</Menu.Item>}
+                   {this.state.currentcard === "Friends" ? <Menu.Item header onClick={this.handleCard} value="Friends">Friends</Menu.Item> : <Menu.Item onClick={this.handleCard} value="Friends">Friends</Menu.Item>}
+                   <Menu.Item position='right' style={{ padding: 0 }}>
+                     <Logout username={this.state.username} handleLogout={this.props.handleLogout} showHome={this.showHome}/>
+                   </Menu.Item>
+             </Menu>
+           </Container>
+
+           </Segment>
+
+           <Grid>
+             <Grid.Row>
+               <Grid.Column width={3}>
+               </Grid.Column>
+               <Grid.Column width={7}>
+                 <Post id={this.props.id} username={this.props.username}/>
+               </Grid.Column>
+               <Grid.Column width={6}>
+               </Grid.Column>
+             </Grid.Row>
+
+             <Grid.Row>
+               <Grid.Column width={3}>
+               </Grid.Column>
+               <Grid.Column width={10}>
+               <Container style={{ minHeight: 500 }}>
+               {this.state.currentcard === "Home" &&
+                <Homeuser id={this.props.id} username={this.props.username}/>}
+               {this.state.currentcard === "Timeline" &&
+                 <Timeline timeline={this.state.timeline} />}
+               {this.state.currentcard === "Locations" &&
+                 <Locations locations={this.state.locations} />}
+               {this.state.currentcard === "Friends" &&
+                 <Friends friends={this.state.friends} />}
+               </Container>
+               </Grid.Column>
+
+               <Grid.Column width={3}>
+               </Grid.Column>
+             </Grid.Row>
+           </Grid>
+         </Sidebar.Pusher>
+       </Sidebar.Pushable>
+
+        {/* <Segment
           inverted
           textAlign='center'
-          style={{padding: '1em 0em' }}
+          style={{padding: '0' }}
           vertical
         >
 
@@ -123,7 +216,7 @@ export default class StickyLayout extends Component {
             <Grid.Column width={6}>
             </Grid.Column>
           </Grid.Row>
-          
+
           <Grid.Row>
             <Grid.Column width={3}>
             </Grid.Column>
@@ -143,11 +236,11 @@ export default class StickyLayout extends Component {
             <Grid.Column width={3}>
             </Grid.Column>
           </Grid.Row>
-        </Grid>
+        </Grid> */}
 
         <Segment
           inverted
-          style={{ margin: '5em 0em 0em', padding: '5em 0em' }}
+          style={{ margin: '0em 0em 0em', padding: '5em 0em' }}
           vertical
         >
           <Container textAlign='center'>
