@@ -1,35 +1,71 @@
-import _ from 'lodash'
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import {
-  Container, Comment, Divider, Dropdown, Grid, Header, Icon, Image, List, Menu, Segment, Visibility,
+  Feed, Button, Header
 } from 'semantic-ui-react';
-import PostRow from "./Children/PostRow";
+import Pending from "./Pending";
+import MyFriends from "./MyFriends";
+import axios from "axios";
+
 
 class Friends extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-            posts: props.posts
-        };
+		this.addFriend = this.addFriend.bind(this);
 	}
-/*
-	componentDidMount(){
-		console.log(this.state.posts);
-	}
-*/
-	populatePosts(){
-		var posts = this.state.posts;
-		return posts.map(function(post,i){
-			return(<PostRow post={post} key={i} />);
-		})
+
+	addFriend(user) {
+		var friendid = user.currentTarget.value;
+		axios.get("/api/User/" + this.props.id + "/Friend/" + friendid).then(res => {
+			alert("Request has been sent, please wait for confirmation.");
+			this.props.updateParent();
+		});
 	}
 
 	render() {
 		return (
-			<Comment.Group size="large">
-				<Header as='h3' dividing>My Posts</Header>
-				{this.populatePosts()}
-			</Comment.Group>
+			<Feed>
+			<Header as="h3">Friends</Header>
+			{this.props.pending.length !== 0 &&
+				<Pending updateParent={this.props.updateParent} pending={this.props.pending} id={this.props.id} showFriends={this.props.showFriends}/>
+			}
+			{this.props.friends.length !== 0 &&
+				<MyFriends updateParent={this.props.updateParent} friends={this.props.friends} id={this.props.id}/>
+			}
+			<Header as="h4">Add Friends</Header>
+			{this.props.users.map((data, i) => {
+				var index = this.props.requested.filter(requested => {
+					return data._id === requested._id;
+				});
+				var index1 = this.props.pending.filter(pending => {
+					return data._id === pending._id;
+				})
+				var friend = this.props.friends.filter(friend => {
+					return data._id === friend._id
+				});
+				var isfriend = friend.length !== 0;
+				var isrequested = index.length !== 0 || index1.length !== 0;
+				var isyourself = this.props.id === data._id ? true : false;
+				return (
+					<Feed.Event key={i}>
+						<Feed.Label>
+						<img src={data.img} />
+						</Feed.Label>
+						<Feed.Content>
+							<Feed.Summary>
+								<Feed.User>{data.username}</Feed.User>
+								{!isyourself && !isrequested && !isfriend && <Button size="mini" floated="right" value={data._id} onClick={this.addFriend}>Add Friend</Button>}
+								{!isyourself && isrequested && <Button size="mini" disabled floated="right">Pending</Button>}
+								{isyourself && <Button size="mini" floated="right" disabled>It's yourself</Button>}
+								{isfriend && !isrequested && <Button size="mini" floated="right" disabled>Friends</Button>}
+							</Feed.Summary>
+							<Feed.Extra text>
+								{data.bio}
+							</Feed.Extra>
+						</Feed.Content>
+					</Feed.Event>
+				)
+			})}
+			</Feed>
 		)
 	}
 }

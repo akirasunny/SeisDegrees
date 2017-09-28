@@ -4,16 +4,20 @@ var path = require("path");
 
 module.exports = {
     uploadPic: function(req, res, next) {
-        // console.log(req.params.id);
-        // console.log(req.files, "Files");
-        var files = req.files.slice(0, 3).filter(function(data) {
-            return (data.mimetype.indexOf("image") !== -1);
-        })
-        var images = files.map(function(data) {
-            // var ext = data.mimetype.substring(data.mimetype.indexOf("/") + 1);
-            return data.path;
-        });
-        res.send(images);
+        if (req.files.length > 1) {
+            var files = req.files.slice(0, 3).filter(function(data) {
+                return (data.mimetype.indexOf("image") !== -1);
+            })
+            var images = files.map(function(data) {
+                return ("/" + data.path);
+            });
+            res.send(images);
+        }
+        else {
+            var image = [("/" + req.files[0].path)]
+            res.send(image);
+        }
+
     },
     createPost: function(req, res) {
 

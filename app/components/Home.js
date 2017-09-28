@@ -60,7 +60,7 @@ class Home extends Component {
             <Grid.Column floated='right' width={6}>
               <Image
                 bordered
-                rounded
+                shape="circular"
                 size='large'
                 src='#'
                 alt="An image"
