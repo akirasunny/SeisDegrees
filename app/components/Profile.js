@@ -64,6 +64,10 @@ export default class StickyLayout extends Component {
   }
 
   componentDidMount() {
+    this.updateParent();
+  }
+
+  updateParent() {
     axios.get("/api/Users/" + this.props.id).then(res => {
       this.setState({
         id: res.data._id,
