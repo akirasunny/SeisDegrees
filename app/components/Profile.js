@@ -9,6 +9,7 @@ import Locations from "./Locations";
 import Friends from "./Friends";
 import Logout from "./Logout";
 import Post from "./Post";
+import ChatWindow from './Chat';
 import axios from "axios";
 
 export default class StickyLayout extends Component {
@@ -17,10 +18,16 @@ export default class StickyLayout extends Component {
     this.state = {
       currentcard: "Home",
       visible: true,
-      locations:[]
+      locations:[],
+      // add message history when selecting friend to chat with
+      chatOpen: false
     };
     this.handleCard = this.handleCard.bind(this);
     this.showHome = this.showHome.bind(this);
+    this._sendMessage = this._sendMessage.bind(this);
+    this._onMessageWasSent = this._onMessageWasSent.bind(this);
+    this.chatClose = this.chatClose.bind(this);
+    this.openChatWindow = this.openChatWindow.bind(this);
   }
 
   // This function serves our purpose of running the query to geolocate.
@@ -81,6 +88,32 @@ export default class StickyLayout extends Component {
     this.setState({ currentcard: card.currentTarget.textContent });
   }
 
+  _onMessageWasSent(message) {
+    this.setState({
+      messageList: [...this.state.messageList, message]
+    })
+  }
+
+  _sendMessage(text) {
+    if (text.length > 0) {
+      this.setState({
+        messageList: [...this.state.messageList, {
+          author: 'them',
+          type: 'text',
+          data: { text }
+        }]
+      })
+    }
+  }
+
+  chatClose() {
+    this.setState({ chatOpen: false });
+  }
+
+  openChatWindow(friendId) {
+    this.setState({ chatOpen: true, friendId: friendId });
+  }
+
   render() {
 
     return (
@@ -107,7 +140,7 @@ export default class StickyLayout extends Component {
            relaxed
          >
            <Header inverted size='small' color='blue'><Icon name='users'/> Online Friends </Header>
-           <List.Item>
+           <List.Item onClick={() => {this.openChatWindow(friendId)}}>
              <List.Icon name='user circle outline' color='green'/>
              <List.Content>
                <List.Header>User 1</List.Header>
@@ -182,61 +215,15 @@ export default class StickyLayout extends Component {
                </Grid.Column>
              </Grid.Row>
            </Grid>
+           {this.state.openChat && <ChatWindow
+             names={{ id: this.state.id, friendId: this.state.friendId }}
+             onMessageWasSent={this._onMessageWasSent}
+             messageList={this.state.messageList
+             }
+             chatClose = {this.chatClose}
+           />}
          </Sidebar.Pusher>
        </Sidebar.Pushable>
-
-        {/* <Segment
-          inverted
-          textAlign='center'
-          style={{padding: '0' }}
-          vertical
-        >
-
-        <Container style={{ width: "100%" }}>
-          <Menu inverted style={{ paddingLeft: 100, paddingRight: 100 }}>
-                {this.state.currentcard === "Home" ? <Menu.Item header onClick={this.handleCard} value="Home">Home</Menu.Item> : <Menu.Item onClick={this.handleCard} value="Home">Home</Menu.Item>}
-                {this.state.currentcard === "Timeline" ? <Menu.Item header onClick={this.handleCard} value="Timeline">Timeline</Menu.Item> : <Menu.Item onClick={this.handleCard} value="Timeline">Timeline</Menu.Item>}
-                {this.state.currentcard === "Locations"? <Menu.Item header onClick={this.handleCard} value="Locations">Locations</Menu.Item> : <Menu.Item onClick={this.handleCard} value="Locations">Locations</Menu.Item>}
-                {this.state.currentcard === "Friends" ? <Menu.Item header onClick={this.handleCard} value="Friends">Friends</Menu.Item> : <Menu.Item onClick={this.handleCard} value="Friends">Friends</Menu.Item>}
-                <Menu.Item position='right' style={{ padding: 0 }}>
-                  <Logout username={this.state.username} handleLogout={this.props.handleLogout} showHome={this.showHome}/>
-                </Menu.Item>
-          </Menu>
-        </Container>
-
-        </Segment>
-
-        <Grid>
-          <Grid.Row>
-            <Grid.Column width={3}>
-            </Grid.Column>
-            <Grid.Column width={7}>
-              <Post id={this.props.id} username={this.props.username}/>
-            </Grid.Column>
-            <Grid.Column width={6}>
-            </Grid.Column>
-          </Grid.Row>
-
-          <Grid.Row>
-            <Grid.Column width={3}>
-            </Grid.Column>
-            <Grid.Column width={10}>
-            <Container style={{ minHeight: 500 }}>
-            {this.state.currentcard === "Home" &&
-             <Homeuser id={this.props.id} username={this.props.username}/>}
-            {this.state.currentcard === "Timeline" &&
-              <Timeline timeline={this.state.timeline} />}
-            {this.state.currentcard === "Locations" &&
-              <Locations locations={this.state.locations} />}
-            {this.state.currentcard === "Friends" &&
-              <Friends friends={this.state.friends} />}
-            </Container>
-            </Grid.Column>
-
-            <Grid.Column width={3}>
-            </Grid.Column>
-          </Grid.Row>
-        </Grid> */}
 
         <Segment
           inverted

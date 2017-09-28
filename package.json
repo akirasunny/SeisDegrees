@@ -30,14 +30,15 @@
     "path": "^0.12.7",
     "rand-token": "^0.3.0",
     "react": "^15.6.1",
+    "react-chat-window": "^1.0.5",
     "react-dom": "^15.6.1",
     "react-life-timeline": "^1.0.11",
     "react-responsive-carousel": "^3.1.27",
     "react-router": "^2.4.1",
-    "react-sidebar": "^2.3.2",
     "react-tooltip": "^3.3.0",
     "semantic-ui-react": "^0.73.1",
-    "socket.io": "^2.0.3"
+    "socket.io": "^2.0.3",
+    "webpack-css-loaders": "^1.0.0"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
