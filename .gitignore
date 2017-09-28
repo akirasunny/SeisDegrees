@@ -1,3 +1,8 @@
 .DS_Store
 node_modules
+<<<<<<< HEAD
 public/bundle.js
+=======
+package-lock.json
+bundle.js
+>>>>>>> a4a9c704b0c74737c1136fd105c957cd6951abb1

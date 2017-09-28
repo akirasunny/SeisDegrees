@@ -16,7 +16,14 @@ export default class StickyLayout extends Component {
   constructor() {
     super();
     this.state = {
+      googleAPI:"AIzaSyBP3Xb01OSpLPBryCTei3tja3b8pU90oIg",
+      menuFixed: false,
+      overlayFixed: false,
       currentcard: "Home",
+      timeline: [],
+      locations: [],
+      friends: [],
+      posts: []
     };
     this.handleCard = this.handleCard.bind(this);
     this.showHome = this.showHome.bind(this);
@@ -24,7 +31,39 @@ export default class StickyLayout extends Component {
     this.updateParent = this.updateParent.bind(this);
   }
 
-  componentWillMount() {
+  // This function serves our purpose of running the query to geolocate.
+  runGeocode(location,post) {
+
+      /*console.log(location);*/
+      /*console.log(post);*/
+
+      // Figure out the geolocation
+      //"http://api.opencagedata.com/geocode/v1/json?query=" + location + "&pretty=1&key=" + this.state.geocodeAPI
+      var queryURL = "https://maps.googleapis.com/maps/api/geocode/json?address=" + location + "&key=" + this.state.googleAPI;
+      return axios.get(queryURL).then(function(response) {
+          /*console.log(response);*/
+          console.log(response.data.results[0].geometry.location,"/",response.data.results[0].formatted_address);
+        // If get get a result, return that result's formatted address property
+        if (response.data.results[0]) {
+          var latLong = response.data.results[0].geometry.location;
+          var unitLoc = [location,latLong.lat,latLong.lng,response.data.results[0].formatted_address,post];
+          var newArray = this.state.locations.slice();
+          newArray.push(unitLoc)
+          this.setState({locations:newArray});
+          /*console.log(this.state.locations);*/
+          // console.log(typeof latLong.lat)
+          /*console.log(location,response.data.results[0].geometry.location);*/
+          /*console.log(unitLoc);*/
+         /* this.latLongArr.push()*/
+        }
+        else{
+          // If we don't get any results, return an empty string
+          return alert("Location not found.");
+        }
+      }.bind(this));
+  }
+
+  componentDidMount() {
     this.updateParent();
   }
 
@@ -38,10 +77,19 @@ export default class StickyLayout extends Component {
         pending: res.data.pending || [],
         friends: res.data.friends || []
       });
-      axios.get("/api/Users").then(res => {
-        this.setState({ users: res.data });
+      axios.get("/api/Users").then(res1 => {
+        this.setState({ users: res1.data });
+        console.log(res.data.posts);
+        var posts = res.data.posts;
+        this.setState({posts:posts})
+
+        posts.forEach(function(post, i) {
+            /*console.log(post.location);*/
+            var location = post.location;
+            this.runGeocode(location,post);
+        }.bind(this));
       });
-    });
+    })
   }
 
   showHome() {
@@ -114,6 +162,7 @@ export default class StickyLayout extends Component {
             {this.state.currentcard === "Locations" &&
               <Locations />}
             {this.state.currentcard === "Friends" &&
+      
               <Friends
                 updateParent={this.updateParent}
                 showFriends={this.showFriends}
@@ -125,6 +174,7 @@ export default class StickyLayout extends Component {
                 users={this.state.users}/>}
             {this.state.currentcard === "Settings" &&
               <Settings showHome={this.showHome} id={this.props.id} username={this.props.username} img={this.state.img}/>}
+
             </Container>
             </Grid.Column>
 
