@@ -22,6 +22,18 @@ module.exports = {
           // These are the specific transformations we'll be using.
           presets: ["react", "es2015"]
         }
+      },
+      {
+        test: /\.css$/, // Only .css files
+        loader: 'style-loader!css-loader' // Run both loaders
+      },
+      {
+        test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        loader: "file-loader"
+      },
+      {
+        test: /\.(png|jpg)$/,
+        loader: 'url-loader?limit=100000'
       }
     ]
   },

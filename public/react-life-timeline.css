@@ -32,3 +32,21 @@ html, body {
 .LifeTimeline > .week:hover {
   opacity: 1.0;
 }
+
+.ui.segment.pushable {
+  margin: 0;
+  border-radius: 0;
+  border:none;
+}
+
+.ui.thin.right.sidebar {
+  width: 180px;
+}
+
+.ui.small.header {
+  margin: 12px 0;
+}
+
+.ui.divided.list > .item {
+  padding-left: 5px;
+}

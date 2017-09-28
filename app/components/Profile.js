@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
 import {
-  Container, Divider, Dropdown, Grid, Header, Icon, Image, List, Menu, Segment, Visibility,
+  Container, Divider, Dropdown, Grid, Header, Icon, Image, List, Menu, Segment, Visibility, Sidebar
 } from 'semantic-ui-react';
 import Homeuser from "./Home-user";
 import Timeline from "./Timeline";
@@ -9,6 +9,7 @@ import Locations from "./Locations";
 import Friends from "./Friends";
 import Logout from "./Logout";
 import Post from "./Post";
+import ChatWindow from './Chat';
 import MyPosts from "./MyPosts";
 import Settings from "./Settings";
 import axios from "axios";
@@ -19,11 +20,15 @@ export default class StickyLayout extends Component {
     this.state = {
       googleAPI:"AIzaSyBP3Xb01OSpLPBryCTei3tja3b8pU90oIg",
       currentcard: "Home",
-      locations: [],
-      posts:[]
+      visible: true,
+      locations:[],
+      posts:[],
+      chatOpen: false
     };
     this.handleCard = this.handleCard.bind(this);
     this.showHome = this.showHome.bind(this);
+    this.chatClose = this.chatClose.bind(this);
+    this.openChatWindow = this.openChatWindow.bind(this);
     this.showFriends = this.showFriends.bind(this);
     this.updateParent = this.updateParent.bind(this);
   }
@@ -87,6 +92,10 @@ export default class StickyLayout extends Component {
         }.bind(this));
       });
     })
+
+    // axios.get("/api/Users").then(res => {
+    //
+    // });
   }
 
   showHome() {
@@ -102,6 +111,14 @@ export default class StickyLayout extends Component {
     console.log(this.state.currentcard);
   }
 
+  chatClose() {
+    this.setState({ chatOpen: false });
+  }
+
+  openChatWindow(friendId) {
+    this.setState({ chatOpen: true, friendId: friendId });
+  }
+
   render() {
 
     return (
@@ -114,78 +131,122 @@ export default class StickyLayout extends Component {
             background: #fff;
           }
         `}</style>
-        
+
+        <Sidebar.Pushable as={Segment}>
+         <Sidebar
+           as={List}
+           animation='overlay'
+           width='thin'
+           direction='right'
+           visible={this.state.visible}
+           icon='labeled'
+           vertical
+           divided
+           relaxed
+         >
+           <Header inverted size='small' color='blue'><Icon name='users'/> Online Friends </Header>
+           {/* map array of online friends to  */}
+           <List.Item onClick={() => {this.openChatWindow(friendId)}}>
+             <List.Icon name='user circle outline' color='green'/>
+             <List.Content>
+               <List.Header>User 1</List.Header>
+               <List.Description>Online</List.Description>
+             </List.Content>
+           </List.Item>
+           <List.Item >
+             <List.Icon name='user circle outline' color='green'/>
+             <List.Content>
+               <List.Header>User 2</List.Header>
+               <List.Description>Online</List.Description>
+             </List.Content>
+           </List.Item>
+           <List.Item>
+             <List.Icon name='user circle outline' color='green'/>
+             <List.Content>
+               <List.Header>User 3</List.Header>
+               <List.Description>Online</List.Description>
+             </List.Content>
+           </List.Item>
+         </Sidebar>
+         <Sidebar.Pusher>
+           <Segment
+             inverted
+             textAlign='center'
+             style={{padding: '0' }}
+             vertical
+           >
+
+              <Container style={{ width: "100%" }}>
+                <Menu inverted style={{ paddingLeft: 100, paddingRight: 100 }}>
+                      {this.state.currentcard === "Home" ? <Menu.Item header onClick={this.handleCard} value="Home">Home</Menu.Item> : <Menu.Item onClick={this.handleCard} value="Home">Home</Menu.Item>}
+                      {this.state.currentcard === "Timeline" ? <Menu.Item header onClick={this.handleCard} value="Timeline">Timeline</Menu.Item> : <Menu.Item onClick={this.handleCard} value="Timeline">Timeline</Menu.Item>}
+                      {this.state.currentcard === "Locations"? <Menu.Item header onClick={this.handleCard} value="Locations">Locations</Menu.Item> : <Menu.Item onClick={this.handleCard} value="Locations">Locations</Menu.Item>}
+                      {this.state.currentcard === "Friends" ? <Menu.Item header onClick={this.handleCard} value="Friends">Friends</Menu.Item> : <Menu.Item onClick={this.handleCard} value="Friends">Friends</Menu.Item>}
+                      {this.state.currentcard === "My Posts" ? <Menu.Item header onClick={this.handleCard} value="Posts">My Posts</Menu.Item> : <Menu.Item onClick={this.handleCard} value="Posts">My Posts</Menu.Item>}
+                      {this.state.currentcard === "Settings" ? <Menu.Item header onClick={this.handleCard} value="Settings">Settings</Menu.Item> : <Menu.Item onClick={this.handleCard} value="Settings">Settings</Menu.Item>}
+                      <Menu.Item position='right' style={{ padding: 0 }}>
+                        <Logout username={this.state.username} id={this.state.id} handleLogout={this.props.handleLogout} showHome={this.showHome} img={this.state.img}/>
+                      </Menu.Item>
+                </Menu>
+              </Container>
+
+           </Segment>
+            <Grid>
+              <Grid.Row>
+                <Grid.Column width={3}>
+                </Grid.Column>
+                <Grid.Column width={7}>
+                  <Post id={this.props.id} username={this.props.username} showHome={this.showHome}/>
+                </Grid.Column>
+                <Grid.Column width={6}>
+                </Grid.Column>
+              </Grid.Row>
+
+              <Grid.Row>
+                <Grid.Column width={3}>
+                </Grid.Column>
+                <Grid.Column width={7}>
+                <Container style={{ minHeight: 500 }}>
+                {this.state.currentcard === "Home" &&
+                  <Homeuser id={this.props.id} username={this.props.username} />}
+                {this.state.currentcard === "Timeline" &&
+                  <Timeline />}
+                {this.state.currentcard === "Locations" &&
+                  <Locations locations={this.state.locations} />}
+                {this.state.currentcard === "Friends" &&
+                  <Friends
+                    updateParent={this.updateParent}
+                    showFriends={this.showFriends}
+                    id={this.props.id}
+                    username={this.props.username}
+                    requested={this.state.requested}
+                    pending={this.state.pending}
+                    friends={this.state.friends}
+                    users={this.state.users}/>}
+                {this.state.currentcard === "My Posts" &&
+                  <MyPosts posts={this.state.posts} update={this.updateParent} />}
+                {this.state.currentcard === "Settings" &&
+                  <Settings showHome={this.showHome} id={this.props.id} username={this.props.username} img={this.state.img}/>}
+
+                </Container>
+                </Grid.Column>
+
+                <Grid.Column width={3}>
+                </Grid.Column>
+              </Grid.Row>
+            </Grid>
+            {this.state.openChat &&
+              <ChatWindow
+                names={{ id: this.state.id, friendId: this.state.friendId }}
+                chatClose = {this.chatClose}
+              />
+            }
+         </Sidebar.Pusher>
+       </Sidebar.Pushable>
+
         <Segment
           inverted
-          textAlign='center'
-          style={{padding: '1em 0em' }}
-          vertical
-        >
-
-        <Container style={{ width: "100%" }}>
-          <Menu inverted style={{ paddingLeft: 100, paddingRight: 100 }}>
-                {this.state.currentcard === "Home" ? <Menu.Item header onClick={this.handleCard} value="Home">Home</Menu.Item> : <Menu.Item onClick={this.handleCard} value="Home">Home</Menu.Item>}
-                {this.state.currentcard === "Timeline" ? <Menu.Item header onClick={this.handleCard} value="Timeline">Timeline</Menu.Item> : <Menu.Item onClick={this.handleCard} value="Timeline">Timeline</Menu.Item>}
-                {this.state.currentcard === "Locations"? <Menu.Item header onClick={this.handleCard} value="Locations">Locations</Menu.Item> : <Menu.Item onClick={this.handleCard} value="Locations">Locations</Menu.Item>}
-                {this.state.currentcard === "Friends" ? <Menu.Item header onClick={this.handleCard} value="Friends">Friends</Menu.Item> : <Menu.Item onClick={this.handleCard} value="Friends">Friends</Menu.Item>}
-                {this.state.currentcard === "My Posts" ? <Menu.Item header onClick={this.handleCard} value="Posts">My Posts</Menu.Item> : <Menu.Item onClick={this.handleCard} value="Posts">My Posts</Menu.Item>}
-                {this.state.currentcard === "Settings" ? <Menu.Item header onClick={this.handleCard} value="Settings">Settings</Menu.Item> : <Menu.Item onClick={this.handleCard} value="Settings">Settings</Menu.Item>}
-                <Menu.Item position='right' style={{ padding: 0 }}>
-                  <Logout username={this.state.username} id={this.state.id} handleLogout={this.props.handleLogout} showHome={this.showHome} img={this.state.img}/>
-                </Menu.Item>
-          </Menu>
-        </Container>
-
-        </Segment>
-
-        <Grid>
-          <Grid.Row>
-            <Grid.Column width={3}>
-            </Grid.Column>
-            <Grid.Column width={7}>
-              <Post id={this.props.id} username={this.props.username} showHome={this.showHome}/>
-            </Grid.Column>
-            <Grid.Column width={6}>
-            </Grid.Column>
-          </Grid.Row>
-          
-          <Grid.Row>
-            <Grid.Column width={3}>
-            </Grid.Column>
-            <Grid.Column width={7}>
-            <Container style={{ minHeight: 500 }}>
-            {this.state.currentcard === "Home" &&
-              <Homeuser id={this.props.id} username={this.props.username} />}
-            {this.state.currentcard === "Timeline" &&
-              <Timeline />}
-            {this.state.currentcard === "Locations" &&
-              <Locations locations={this.state.locations} />}
-            {this.state.currentcard === "Friends" &&      
-              <Friends
-                updateParent={this.updateParent}
-                showFriends={this.showFriends}
-                id={this.props.id}
-                username={this.props.username}
-                requested={this.state.requested}
-                pending={this.state.pending}
-                friends={this.state.friends}
-                users={this.state.users}/>}
-            {this.state.currentcard === "My Posts" &&
-              <MyPosts posts={this.state.posts} update={this.updateParent} />}
-            {this.state.currentcard === "Settings" &&
-              <Settings showHome={this.showHome} id={this.props.id} username={this.props.username} img={this.state.img}/>}
-      
-            </Container>
-            </Grid.Column>
-
-            <Grid.Column width={3}>
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
-
-        <Segment
-          inverted
-          style={{ margin: '5em 0em 0em', padding: '5em 0em' }}
+          style={{ margin: '0em 0em 0em', padding: '5em 0em' }}
           vertical
         >
           <Container textAlign='center'>
