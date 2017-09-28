@@ -27,12 +27,26 @@ class ChatWindow extends Component {
     });
   }
 
-  onUserInputSubmit(message) {
-    this.props.onUserInputSubmit(message);
+  onMessageWasSent(message) {
+    this.setState({
+      messages: this.state.messages.concat(message)
+    });
   }
 
-  onMessageReceived(message) {
-    this.setState({ messages: this.state.messages.concat(message)});
+  sendMessage(text) {
+    if (text.length > 0) {
+      this.setState({
+        messageList: [...this.state.messageList, {
+          author: 'them',
+          type: 'text',
+          data: { text }
+        }]
+      })
+    }
+  }
+
+  onUserInputSubmit(message) {
+    // if not empty, add to DB, emit w/ message, then update messages state
   }
 
   render() {

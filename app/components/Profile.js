@@ -19,13 +19,10 @@ export default class StickyLayout extends Component {
       currentcard: "Home",
       visible: true,
       locations:[],
-      // add message history when selecting friend to chat with
       chatOpen: false
     };
     this.handleCard = this.handleCard.bind(this);
     this.showHome = this.showHome.bind(this);
-    this._sendMessage = this._sendMessage.bind(this);
-    this._onMessageWasSent = this._onMessageWasSent.bind(this);
     this.chatClose = this.chatClose.bind(this);
     this.openChatWindow = this.openChatWindow.bind(this);
   }
@@ -78,6 +75,10 @@ export default class StickyLayout extends Component {
           this.runGeocode(location,post);
       }.bind(this));
     })
+
+    // axios.get("/api/Users").then(res => {
+    //
+    // });
   }
 
   showHome() {
@@ -86,24 +87,6 @@ export default class StickyLayout extends Component {
 
   handleCard(card) {
     this.setState({ currentcard: card.currentTarget.textContent });
-  }
-
-  _onMessageWasSent(message) {
-    this.setState({
-      messageList: [...this.state.messageList, message]
-    })
-  }
-
-  _sendMessage(text) {
-    if (text.length > 0) {
-      this.setState({
-        messageList: [...this.state.messageList, {
-          author: 'them',
-          type: 'text',
-          data: { text }
-        }]
-      })
-    }
   }
 
   chatClose() {
@@ -140,6 +123,7 @@ export default class StickyLayout extends Component {
            relaxed
          >
            <Header inverted size='small' color='blue'><Icon name='users'/> Online Friends </Header>
+           {/* map array of online friends to  */}
            <List.Item onClick={() => {this.openChatWindow(friendId)}}>
              <List.Icon name='user circle outline' color='green'/>
              <List.Content>
@@ -217,9 +201,6 @@ export default class StickyLayout extends Component {
            </Grid>
            {this.state.openChat && <ChatWindow
              names={{ id: this.state.id, friendId: this.state.friendId }}
-             onMessageWasSent={this._onMessageWasSent}
-             messageList={this.state.messageList
-             }
              chatClose = {this.chatClose}
            />}
          </Sidebar.Pusher>
