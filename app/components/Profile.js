@@ -9,6 +9,7 @@ import Locations from "./Locations";
 import Friends from "./Friends";
 import Logout from "./Logout";
 import Post from "./Post";
+import Settings from "./Settings";
 import axios from "axios";
 
 export default class StickyLayout extends Component {
@@ -19,19 +20,36 @@ export default class StickyLayout extends Component {
     };
     this.handleCard = this.handleCard.bind(this);
     this.showHome = this.showHome.bind(this);
+    this.showFriends = this.showFriends.bind(this);
+    this.updateParent = this.updateParent.bind(this);
   }
 
   componentWillMount() {
+    this.updateParent();
+  }
+
+  updateParent() {
     axios.get("/api/Users/" + this.props.id).then(res => {
       this.setState({
         id: res.data._id,
-        username: res.data.username
-      })
-    })
+        username: res.data.username,
+        img: res.data.img,
+        requested: res.data.requested || [],
+        pending: res.data.pending || [],
+        friends: res.data.friends || []
+      });
+      axios.get("/api/Users").then(res => {
+        this.setState({ users: res.data });
+      });
+    });
   }
 
   showHome() {
     this.setState({ currentcard: "Home" });
+  }
+
+  showFriends() {
+    this.setState({ currentcard: "Friends" });
   }
 
   handleCard(card) {
@@ -64,8 +82,9 @@ export default class StickyLayout extends Component {
                 {this.state.currentcard === "Timeline" ? <Menu.Item header onClick={this.handleCard} value="Timeline">Timeline</Menu.Item> : <Menu.Item onClick={this.handleCard} value="Timeline">Timeline</Menu.Item>}
                 {this.state.currentcard === "Locations"? <Menu.Item header onClick={this.handleCard} value="Locations">Locations</Menu.Item> : <Menu.Item onClick={this.handleCard} value="Locations">Locations</Menu.Item>}
                 {this.state.currentcard === "Friends" ? <Menu.Item header onClick={this.handleCard} value="Friends">Friends</Menu.Item> : <Menu.Item onClick={this.handleCard} value="Friends">Friends</Menu.Item>}
+                {this.state.currentcard === "Settings" ? <Menu.Item header onClick={this.handleCard} value="Settings">Settings</Menu.Item> : <Menu.Item onClick={this.handleCard} value="Settings">Settings</Menu.Item>}
                 <Menu.Item position='right' style={{ padding: 0 }}>
-                  <Logout username={this.state.username} handleLogout={this.props.handleLogout} showHome={this.showHome}/>
+                  <Logout username={this.state.username} id={this.state.id} handleLogout={this.props.handleLogout} showHome={this.showHome} img={this.state.img}/>
                 </Menu.Item>
           </Menu>
         </Container>
@@ -77,7 +96,7 @@ export default class StickyLayout extends Component {
             <Grid.Column width={3}>
             </Grid.Column>
             <Grid.Column width={7}>
-              <Post id={this.props.id} username={this.props.username}/>
+              <Post id={this.props.id} username={this.props.username} showHome={this.showHome}/>
             </Grid.Column>
             <Grid.Column width={6}>
             </Grid.Column>
@@ -86,16 +105,26 @@ export default class StickyLayout extends Component {
           <Grid.Row>
             <Grid.Column width={3}>
             </Grid.Column>
-            <Grid.Column width={10}>
+            <Grid.Column width={7}>
             <Container style={{ minHeight: 500 }}>
             {this.state.currentcard === "Home" &&
              <Homeuser id={this.props.id} username={this.props.username}/>}
             {this.state.currentcard === "Timeline" &&
-              <Timeline timeline={this.state.timeline} />}
+              <Timeline />}
             {this.state.currentcard === "Locations" &&
-              <Locations locations={this.state.locations} />}
+              <Locations />}
             {this.state.currentcard === "Friends" &&
-              <Friends friends={this.state.friends} />}
+              <Friends
+                updateParent={this.updateParent}
+                showFriends={this.showFriends}
+                id={this.props.id}
+                username={this.props.username}
+                requested={this.state.requested}
+                pending={this.state.pending}
+                friends={this.state.friends}
+                users={this.state.users}/>}
+            {this.state.currentcard === "Settings" &&
+              <Settings showHome={this.showHome} id={this.props.id} username={this.props.username} img={this.state.img}/>}
             </Container>
             </Grid.Column>
 

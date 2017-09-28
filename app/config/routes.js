@@ -6,11 +6,7 @@ import { browserHistory } from "react-router";
 import { IndexRoute } from "react-router";
 
 import Main from "../components/Main";
-import Login from "../components/Login";
 import Index from "../components/Index";
-import Signup from "../components/Signup";
-import Profile from "../components/Profile";
-import Member from "../components/Member";
 
 // Export the Routes
 module.exports = (

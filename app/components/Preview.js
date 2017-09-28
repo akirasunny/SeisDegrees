@@ -19,7 +19,7 @@ class Preview extends Component {
 				<Header size='small'>Preview</Header>
 				{this.props.src.map(function(data, i) {
 					return(
-						<Image size="small" inline shape="circular" key={i} src={"/" + data} />
+						<Image size="small" inline shape="circular" key={i} src={data} />
 					)
 				})}
 				<br />

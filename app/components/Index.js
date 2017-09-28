@@ -13,7 +13,6 @@ import {
   Visibility,
 } from 'semantic-ui-react';
 import { Link } from 'react-router';
-import Login from "./Login";
 import Signup from "./Signup";
 import Home from "./Home";
 import Profile from "./Profile";

@@ -14,7 +14,7 @@ class Signup extends Component {
   constructor() {
     super();
     this.state = {
-      switch: false,
+      switch: true,
       open: false,
       username: "",
       email: "",

@@ -50,13 +50,13 @@ router.post("/User/Update/:id", userController.updateUser);
 // Add friend to User
 router.get("/User/:userId/Friend/:friendId", userController.addFriend);
 
-// Add friend to User
+// Remove friend to User
 router.get("/User/:userId/Unfriend/:friendId", userController.removeFriend);
 
 // Accept friend request
 router.get("/:userId/Accept/:friendId", userController.acceptFriend);
 
-// Accept friend request
+// Reject friend request
 router.get("/:userId/Reject/:friendId", userController.rejectFriend);
 
 // Get all Users
@@ -64,6 +64,9 @@ router.get("/Users", userController.allUsers);
 
 // Get one User
 router.get("/Users/:id", userController.oneUser);
+
+// Get one User by id
+router.get("/Users/id/:id", userController.oneUserId);
 
 // get one User and delete
 router.get("/Delete/User/:id", userController.deleteUser);

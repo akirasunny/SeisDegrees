@@ -228,6 +228,17 @@ module.exports = {
 
     },
 
+    oneUserId: function(req, res) {
+        User.findById(req.params.id).exec(function(error, user) {
+            if (error) {
+                res.send(error);
+            }
+            else {
+                res.send(user);
+            }
+        })
+    },
+
     deleteUser: function(req, res) {
 
         // Find one User by their id and remove.
