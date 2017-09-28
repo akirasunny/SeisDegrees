@@ -21,7 +21,8 @@ export default class StickyLayout extends Component {
       currentcard: "Home",
       timeline: [],
       locations: [],
-      friends: []
+      friends: [],
+      posts: []
     };
     this.handleCard = this.handleCard.bind(this);
     this.showHome = this.showHome.bind(this);
@@ -68,6 +69,7 @@ export default class StickyLayout extends Component {
 
       console.log(res.data.posts);
       var posts = res.data.posts;
+      this.setState({posts:posts})
 
       posts.forEach(function(post, i) {
           /*console.log(post.location);*/
@@ -142,7 +144,7 @@ export default class StickyLayout extends Component {
             {this.state.currentcard === "Locations" &&
               <Locations locations={this.state.locations} />}
             {this.state.currentcard === "Friends" &&
-              <Friends friends={this.state.friends} />}
+              <Friends friends={this.state.friends} posts={this.state.posts} />}
             </Container>
             </Grid.Column>
 

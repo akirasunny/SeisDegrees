@@ -119,9 +119,20 @@ module.exports = {
 
     allPosts: function(req, res) {
 
-        // Find all Posts
+/*        // Find all Posts
         Post.find({ owner: req.params.id }).populate(["owner", "tagged"])
             .exec(function(error, all) {
+                // Send any errors to the browser
+                if (error) {
+                    res.send(error);
+                }
+                // Or, send our results to the browser
+                else {
+                    res.send(all);
+                }
+            });*/
+                    // Find all Posts
+        Post.find({},function(error, all) {
                 // Send any errors to the browser
                 if (error) {
                     res.send(error);
