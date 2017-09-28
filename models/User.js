@@ -9,7 +9,8 @@ var UserSchema = new Schema({
     username: {
         type: String,
         trim: true,
-        required: true
+        required: true,
+        text: true
     },
     // Email is required and needs to be validated
     email: {
@@ -32,7 +33,16 @@ var UserSchema = new Schema({
     },
     // Profile img
     img: {
-        type: String
+        type: String,
+        default: "/public/assets/ProfileImages/unavailable.jpg"
+    },
+    bio: {
+        type: String,
+        default: ""
+    },
+    gender: {
+        type: String,
+        default: "Secret"
     },
     // This only saves one note's ObjectId, ref refers to the Note model
     posts: [{

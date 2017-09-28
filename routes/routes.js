@@ -18,4 +18,8 @@ router.get("/public/assets/UserImages/:file", function(req, res) {
 	res.sendFile(path.join(__dirname, "../public/assets/UserImages/" + req.params.file));
 });
 
+router.get("/public/assets/ProfileImages/:file", function(req, res) {
+	res.sendFile(path.join(__dirname, "../public/assets/ProfileImages/" + req.params.file));
+});
+
 module.exports = router;

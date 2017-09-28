@@ -3,6 +3,7 @@ import {
   Container, Feed
 } from 'semantic-ui-react';
 import axios from "axios";
+import moment from "moment";
 
 class Homeuser extends Component {
 	constructor() {
@@ -13,8 +14,8 @@ class Homeuser extends Component {
 	}
 	
 	componentWillMount() {
-		axios.get("/api/Users/" + this.props.id).then(res => {
-			/*console.log(res.data.posts);*/
+	axios.get("/api/Users/" + this.props.id).then(res => {
+			console.log(res.data.posts);
 			this.setState({ posts: res.data.posts });
 		})
 	}
@@ -23,13 +24,16 @@ class Homeuser extends Component {
 		return (
 			<Feed>
 				{this.state.posts.map((data, i) => {
-					/*console.log(data);*/
+					var gender = data.owner.gender === "Female" ? "her" : "his";
 					return (
 						<Feed.Event key={i}>
+						<Feed.Label>
+						<img src={data.owner.img} />
+						</Feed.Label>
 							<Feed.Content>
 								<Feed.Summary>
-									<Feed.User>{data.owner.username}</Feed.User> posted on her page.
-									<Feed.Date>{data.date}</Feed.Date>
+									<Feed.User>{data.owner.username}</Feed.User> posted on {gender} page.
+									<Feed.Date>{moment(data.date).format("HH:mm  MM-DD-YYYY")}</Feed.Date>
 								</Feed.Summary>
 								<Feed.Extra text>
 									{data.title}
@@ -40,7 +44,7 @@ class Homeuser extends Component {
 								<Feed.Extra images>
 									{data.img.map((img, i) => {
 										return (
-											<a><img key={i} src={"/" + img} /></a>
+											<img key={i} src={img} />
 										)
 									})}
 								</Feed.Extra>

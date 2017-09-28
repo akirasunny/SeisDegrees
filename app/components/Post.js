@@ -30,7 +30,6 @@ class Post extends Component {
 	handleInput(event) {
 		var obj = {};
 		obj[event.target.id] = event.target.value;
-		console.log(obj);
 		this.setState(obj);
 	}
 
@@ -46,7 +45,14 @@ class Post extends Component {
 			tagged: state.tagged
 		};
 		axios.post("/api/Post", obj).then(res => {
-			console.log(res);
+			this.setState({
+				title: "",
+				body: "",
+				img: [],
+				location: "",
+				date: ""
+			});
+			window.location = "/";
 		})
 	}
 
@@ -78,7 +84,7 @@ class Post extends Component {
 			{this.state.img && 
 				this.state.img.map((data, i) => {
 				return(
-					<Image size="small" inline shape="circular" key={i} src={"/" + data} />
+					<Image size="small" inline key={i} src={data} />
 				)
 			})}
 			</Container>

@@ -10,6 +10,7 @@ import Friends from "./Friends";
 import Logout from "./Logout";
 import Post from "./Post";
 import MyPosts from "./MyPosts";
+import Settings from "./Settings";
 import axios from "axios";
 
 export default class StickyLayout extends Component {
@@ -24,6 +25,8 @@ export default class StickyLayout extends Component {
     this.handleCard = this.handleCard.bind(this);
     this.showHome = this.showHome.bind(this);
     this.updateData = this.updateData.bind(this);
+    this.showFriends = this.showFriends.bind(this);
+    this.updateParent = this.updateParent.bind(this);
   }
 
   // This function serves our purpose of running the query to geolocate.
@@ -59,31 +62,40 @@ export default class StickyLayout extends Component {
   }
 
   componentDidMount() {
-    this.updateData();
+    this.updateParent();
   }
 
-  updateData() {
+  updateParent() {
     axios.get("/api/Users/" + this.props.id).then(res => {
       this.setState({
         id: res.data._id,
         username: res.data.username,
-        img: res.data.img
+        img: res.data.img,
+        requested: res.data.requested || [],
+        pending: res.data.pending || [],
+        friends: res.data.friends || []
       });
+      axios.get("/api/Users").then(res1 => {
+        this.setState({ users: res1.data });
+        console.log(res.data.posts);
+        var posts = res.data.posts;
+        this.setState({posts:posts})
 
-      console.log(res.data.posts);
-      var posts = res.data.posts;
-      this.setState({posts:posts})
-
-      posts.forEach(function(post, i) {
-          /*console.log(post.location);*/
-          var location = post.location;
-          this.runGeocode(location,post);
-      }.bind(this));
+        posts.forEach(function(post, i) {
+            /*console.log(post.location);*/
+            var location = post.location;
+            this.runGeocode(location,post);
+        }.bind(this));
+      });
     })
   }
 
   showHome() {
     this.setState({ currentcard: "Home" });
+  }
+
+  showFriends() {
+    this.setState({ currentcard: "Friends" });
   }
 
   handleCard(card) {
@@ -118,8 +130,9 @@ export default class StickyLayout extends Component {
                 {this.state.currentcard === "Locations"? <Menu.Item header onClick={this.handleCard} value="Locations">Locations</Menu.Item> : <Menu.Item onClick={this.handleCard} value="Locations">Locations</Menu.Item>}
                 {this.state.currentcard === "Friends" ? <Menu.Item header onClick={this.handleCard} value="Friends">Friends</Menu.Item> : <Menu.Item onClick={this.handleCard} value="Friends">Friends</Menu.Item>}
                 {this.state.currentcard === "My Posts" ? <Menu.Item header onClick={this.handleCard} value="Posts">My Posts</Menu.Item> : <Menu.Item onClick={this.handleCard} value="Posts">My Posts</Menu.Item>}
+                {this.state.currentcard === "Settings" ? <Menu.Item header onClick={this.handleCard} value="Settings">Settings</Menu.Item> : <Menu.Item onClick={this.handleCard} value="Settings">Settings</Menu.Item>}
                 <Menu.Item position='right' style={{ padding: 0 }}>
-                  <Logout username={this.state.username} handleLogout={this.props.handleLogout} showHome={this.showHome}/>
+                  <Logout username={this.state.username} id={this.state.id} handleLogout={this.props.handleLogout} showHome={this.showHome} img={this.state.img}/>
                 </Menu.Item>
           </Menu>
         </Container>
@@ -131,7 +144,7 @@ export default class StickyLayout extends Component {
             <Grid.Column width={3}>
             </Grid.Column>
             <Grid.Column width={7}>
-              <Post id={this.props.id} username={this.props.username}/>
+              <Post id={this.props.id} username={this.props.username} showHome={this.showHome}/>
             </Grid.Column>
             <Grid.Column width={6}>
             </Grid.Column>
@@ -140,18 +153,29 @@ export default class StickyLayout extends Component {
           <Grid.Row>
             <Grid.Column width={3}>
             </Grid.Column>
-            <Grid.Column width={10}>
+            <Grid.Column width={7}>
             <Container style={{ minHeight: 500 }}>
             {this.state.currentcard === "Home" &&
               <Homeuser id={this.props.id} username={this.props.username} />}
             {this.state.currentcard === "Timeline" &&
-              <Timeline timeline={this.state.timeline} />}
+              <Timeline />}
             {this.state.currentcard === "Locations" &&
-              <Locations locations={this.state.locations} />}
-            {this.state.currentcard === "Friends" &&
-              <Friends friends={this.state.friends} />}
+              <Locations />}
+            {this.state.currentcard === "Friends" &&      
+              <Friends
+                updateParent={this.updateParent}
+                showFriends={this.showFriends}
+                id={this.props.id}
+                username={this.props.username}
+                requested={this.state.requested}
+                pending={this.state.pending}
+                friends={this.state.friends}
+                users={this.state.users}/>}
             {this.state.currentcard === "My Posts" &&
-              <MyPosts posts={this.state.posts} update={this.updateData} />}
+              <MyPosts posts={this.state.posts} update={this.updateParent} />}
+            {this.state.currentcard === "Settings" &&
+              <Settings showHome={this.showHome} id={this.props.id} username={this.props.username} img={this.state.img}/>}
+      
             </Container>
             </Grid.Column>
 
