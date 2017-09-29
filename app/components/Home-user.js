@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  Container, Feed
+  Container, Feed, Button
 } from 'semantic-ui-react';
 import axios from "axios";
 import moment from "moment";
@@ -9,14 +9,24 @@ class Homeuser extends Component {
 	constructor() {
 		super();
 		this.state = {
-			posts: []
+			posts: [],
+			open: false
 		};
 	}
 	
 	componentWillMount() {
 	axios.get("/api/Users/" + this.props.id).then(res => {
-			console.log(res.data.posts);
-			this.setState({ posts: res.data.posts });
+			var postsId = res.data.posts.map(data => {
+				return data._id;
+			});
+			for (var i = 0; i < res.data.friends.length; i++) {
+				for (var j = 0; j < res.data.friends[i].posts.length; j++) {
+					postsId.push(res.data.friends[i].posts[j]);
+				}
+			}
+			axios.post("/api/Posts", {array: postsId}).then(posts => {
+				this.setState({ posts: posts.data });		
+			});
 		})
 	}
 
@@ -24,6 +34,7 @@ class Homeuser extends Component {
 		return (
 			<Feed>
 				{this.state.posts.map((data, i) => {
+					var isyourself = data.owner._id === this.props.id;
 					var gender = data.owner.gender === "Female" ? "her" : "his";
 					return (
 						<Feed.Event key={i}>
@@ -34,12 +45,24 @@ class Homeuser extends Component {
 								<Feed.Summary>
 									<Feed.User>{data.owner.username}</Feed.User> posted on {gender} page.
 									<Feed.Date>{moment(data.date).format("HH:mm  MM-DD-YYYY")}</Feed.Date>
+									<Feed.Summary>
+									{isyourself &&
+										<Button size="mini" color="red" floated="right" value={data.owner._id} onClick={this.deletePost}>Delete</Button>
+									}
+									{isyourself &&
+										<Button size="mini" floated="right" value={data.owner._id} onClick={this.editPost}>Edit</Button>
+									}
+									</Feed.Summary>
+								</Feed.Summary>
+								<Feed.Summary>
+									{data.title}
 								</Feed.Summary>
 								<Feed.Extra text>
-									{data.title}
-								</Feed.Extra>
-								<Feed.Extra text>
-									{data.body}
+									{data.body.split("<br />").map( (data, i) => {
+										return(
+											<p key={i}>{data}</p>
+										)
+									})}
 								</Feed.Extra>
 								<Feed.Extra images>
 									{data.img.map((img, i) => {
