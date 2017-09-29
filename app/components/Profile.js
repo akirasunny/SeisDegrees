@@ -274,7 +274,7 @@ export default class StickyLayout extends Component {
                 <Grid.Column width={7}>
                 <Container style={{ minHeight: 500 }}>
                 {this.state.currentcard === "Home" &&
-                  <Homeuser id={this.props.id} username={this.props.username} />}
+                  <Homeuser id={this.props.id} username={this.props.username} posts={this.state.posts} update={this.updateParent} />}
                 {this.state.currentcard === "Timeline" &&
                   <Timeline />}
                 {this.state.currentcard === "Locations" &&
