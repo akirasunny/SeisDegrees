@@ -46,7 +46,7 @@ class ImageProfile extends Component {
 				style={{ minHeight: 300, width: "70%", padding: 20 }} 
 				trigger={<Button onClick={this.handleOpen}>Update profile photo</Button>}
 			>
-				<Header size='small'>Update your profile picture.</Header>
+				<Header size='small'>Update your profile photo.</Header>
 				<Header size='tiny'>jpg, png & gif supported.</Header>
 				<Icon key="close" name="close" onClick={this.handleOpen} />
 				<Form>
