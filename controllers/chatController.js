@@ -9,7 +9,7 @@ module.exports = {
         req.body.room = req.body.owners.sort().join().replace(/,/g, "&");
 
         // Find all Users
-        Chat.findOne({ room: req.body.room }, function(error, chat) {
+        Chat.findOne({ room: req.body.room }).populate("messages").exec( function(error, chat) {
             // Send any errors to the browser
             console.log(chat)
             if (error) {
@@ -64,7 +64,7 @@ module.exports = {
                 console.log(message)
 
                 // Find the Chat by id and update
-                Chat.findOneAndUpdate({ _id: req.params.chatId }, { $push: { messages: message } }, { new: true }, function(err, updatedChat) {
+                Chat.findOneAndUpdate({ room: req.params.chatId }, { $push: { messages: message } }, { new: true }, function(err, updatedChat) {
                     // Send any errors to the browser
                     if (err) {
                         res.send(err);
@@ -72,7 +72,7 @@ module.exports = {
                     // Or send the updatedChat to the browser
                     else {
                         console.log(updatedChat)
-                        res.send(updatedChat);
+                        res.send(message);
                     }
                 });
             }
@@ -135,7 +135,7 @@ module.exports = {
 
         var users = [req.params.id1,req.params.id2];
         var query = {};
-        
+
         // Create chatroom name and add to request body
         query.room = users.sort().join().replace(/,/g, "&");
 

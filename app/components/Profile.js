@@ -35,6 +35,8 @@ export default class StickyLayout extends Component {
     this.openChatWindow = this.openChatWindow.bind(this);
     this.showFriends = this.showFriends.bind(this);
     this.updateParent = this.updateParent.bind(this);
+    this.inputSubmit = this.inputSubmit.bind(this);
+    this.onType = this.onType.bind(this);
   }
 
   // This function serves our purpose of running the query to geolocate.
@@ -103,6 +105,9 @@ export default class StickyLayout extends Component {
         socket.emit("disconnect",{id: this.props.id});
       });
     };
+    socket.on("typing", function(data) {
+      this.setState({ typing: data });
+    }.bind(this));
   }
 
   componentWillUnmount() {
@@ -155,12 +160,39 @@ export default class StickyLayout extends Component {
   }
 
   chatClose() {
+    socket.emit("leaveRoom");
     this.setState({ chatOpen: false, friendId:'' });
   }
 
+  inputSubmit(message) {
+    if(message.length > 0) {
+      axios.post("/api/Chat/Log/"+this.state.room+"/"+this.state.username,{message:message}).then((newChat)=>{
+        console.log(newChat);
+        socket.emit("openOtherChat",{receiver:this.state.friendId,sender:this.state.id});
+        // socket.emit("chat",newChat.messages);
+        this.setState({ messages: this.state.messages.concat(newChat.data) });
+      });
+    }
+  }
+
   openChatWindow(friendId) {
-    console.log('Hello',friendId);
-    this.setState({ friendId: friendId, chatOpen: true });
+    axios.get("/api/Users/" + this.state.id).then(res => {
+      console.log(res);
+      // this.setState({ user1: { pic: res.data.img, name: res.data.username }});
+      axios.get("/api/Users/" + friendId).then(res1 => {
+        console.log(res1);
+        // this.setState({ user2: { pic: res1.data.img, name: res1.data.username }});
+        axios.post("/api/Chat",{owners:[friendId,this.state.id]}).then((res2)=>{
+          console.log(res2);
+          socket.emit("joinRoom",{id: this.state.id, roomId: res2.data.room});
+          this.setState({ user1: { pic: res.data.img, name: res.data.username },user2: { pic: res1.data.img, name: res1.data.username },messages: res2.data.messages, room: res2.data.room, friendId: friendId, typing: '',chatOpen: true });
+        });
+      });
+    });
+  }
+
+  onType() {
+    socket.emit("typing", this.state.user1.name);
   }
 
   render() {
@@ -191,7 +223,6 @@ export default class StickyLayout extends Component {
            {
              this.state.online.map((friend,i)=>{
                var friendId = friend._id;
-               console.log(friendId);
                return(
                  <List.Item value={friendId} onClick={()=>this.openChatWindow(friendId)} key={i}>
                    <Image src={friend.img} size='mini' shape='circular' />
@@ -273,8 +304,13 @@ export default class StickyLayout extends Component {
             </Grid>
             {this.state.chatOpen &&
               <ChatWindow
-                names={{ id: this.state.id, friendId: this.state.friendId }}
+                messages={this.state.messages}
+                user1={this.state.user1}
+                user2={this.state.user2}
                 chatClose = {this.chatClose}
+                inputSubmit = {this.inputSubmit}
+                onType = {this.onType}
+                typing={this.state.typing}
               />
             }
          </Sidebar.Pusher>

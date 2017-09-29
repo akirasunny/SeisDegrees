@@ -29,10 +29,10 @@ module.exports = function(socket) {
     socket.broadcast.emit("tryingToJoin",data);
   });
 
-  socket.on("chat", function(data) {
-    console.log("test send chat socket");
-    socket.broadcast.to(socket.room).emit("newChat", data);
-  });
+  // socket.on("chat", function(data) {
+  //   console.log("test send chat socket");
+  //   socket.broadcast.to(socket.room).emit("newChat", data);
+  // });
   socket.on("typing", function(data) {
     console.log("test typing socket");
     socket.broadcast.to(socket.room).emit("typing", data);
