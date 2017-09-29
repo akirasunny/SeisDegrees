@@ -14,7 +14,7 @@ class Homeuser extends Component {
 		};
 	}
 	
-	componentWillMount() {
+/*	componentWillMount() {
 	axios.get("/api/Users/" + this.props.id).then(res => {
 			var postsId = res.data.posts.map(data => {
 				return data._id;
@@ -28,12 +28,13 @@ class Homeuser extends Component {
 				this.setState({ posts: posts.data });		
 			});
 		})
+		this.props.update();
 	}
-
+*/
 	render() {
 		return (
 			<Feed>
-				{this.state.posts.map((data, i) => {
+				{this.props.posts.map((data, i) => {
 					var isyourself = data.owner._id === this.props.id;
 					var gender = data.owner.gender === "Female" ? "her" : "his";
 					return (
