@@ -1,10 +1,5 @@
 import React from "react";
-import { Route } from "react-router";
-import { Router } from "react-router";
-import { browserHistory } from "react-router";
-
-import { IndexRoute } from "react-router";
-
+import { Route, Router, browserHistory, IndexRoute } from "react-router";
 import Main from "../components/Main";
 import Index from "../components/Index";
 
