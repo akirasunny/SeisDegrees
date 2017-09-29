@@ -98,7 +98,6 @@ export default class StickyLayout extends Component {
 
   handleCard(card) {
     this.setState({ currentcard: card.currentTarget.textContent });
-    console.log(this.state.currentcard);
   }
 
   render() {
@@ -142,7 +141,9 @@ export default class StickyLayout extends Component {
             <Grid.Column width={3}>
             </Grid.Column>
             <Grid.Column width={7}>
+      
               <Post id={this.props.id} username={this.props.username} showHome={this.showHome} update={this.updateParent} />
+
             </Grid.Column>
             <Grid.Column width={6}>
             </Grid.Column>

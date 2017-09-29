@@ -257,9 +257,14 @@ module.exports = {
         }
 
         // Find one User by their id and populate friends, requested, pending, posts, and tags arrays.
-        User.findOne(query, null, {sort: {date: 1}}).populate(["friends", "requested", "pending",
+        User.findOne(query).populate(["friends", "requested", "pending",
             {
                 path: 'posts',
+                options: {
+                    sort: {
+                        date: -1
+                    }
+                },
                 model: 'Post',
                 populate: [
                 {
