@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import {
-  Container, Comment, Divider, Table, Modal, Dropdown, Grid, Header, Icon, Image, List, Menu, Segment, Visibility,
+  Container, Comment, Divider, Table, Modal, Dropdown, Grid, Header, Icon, Image, List, Menu, Segment, Button,
 } from 'semantic-ui-react';
+import moment from "moment";
+import axios from "axios";
 import PostRowComment from "./Grandchildren/PostRowComment";
 
 class PostRow extends Component {
@@ -21,6 +23,7 @@ class PostRow extends Component {
             comments: props.post.comments*/
         };
         this.activateLasers = this.activateLasers.bind(this);
+        this.deletePost = this.deletePost.bind(this);
 	}
 
 /*	componentWillReceiveProps(newProps) {
@@ -31,6 +34,16 @@ class PostRow extends Component {
 
 	activateLasers(){
 		this.props.modal(this.state);
+	}
+
+	deletePost(post) {
+		var postId = post.currentTarget.value;
+		var isdelete = confirm("Are you sure you want to delete this post?");
+		if (isdelete) {
+			axios.get("/api/Delete/Post/" + postId).then(res => {
+				this.props.update();
+			})
+		}
 	}
 
 	renderComments(){
@@ -45,21 +58,30 @@ class PostRow extends Component {
 		    <Comment>
 		      <Comment.Avatar src={this.state.img} />
 		      <Comment.Content>
-		        <Comment.Author as='a'>{this.state.user}</Comment.Author>
+		        <Comment.Author as='h4'>{this.state.user}</Comment.Author>
 		        <Comment.Metadata>
-		          <div>{this.state.date}</div>
+		          <div>{moment(this.state.date).format("HH:mm MM-DD-YYYY")}</div>
 		        </Comment.Metadata>
 
 		        <Table celled>
 					<Table.Header>
 					  <Table.Row>
-					    <Table.HeaderCell><Comment.Text><Header>{this.state.title}</Header></Comment.Text></Table.HeaderCell>
+					    <Table.HeaderCell><Comment.Text><Header as="h3">{this.state.title}
+					    <Button size="mini" color="red" floated="right" onClick={this.deletePost} value={this.state.postId}>Delete</Button>
+					    <Button size="mini" floated="right" onClick={this.props.editModal} value={this.state.postId}>Edit</Button>
+					    </Header></Comment.Text></Table.HeaderCell>
 					  </Table.Row>
 					</Table.Header>
 
 					<Table.Body>
 					  <Table.Row>
-					    <Table.Cell><Comment.Text>{this.state.body}</Comment.Text></Table.Cell>
+					    <Table.Cell><Comment.Text as="p">
+					    {this.state.body.split("<br />").map((data, i) => {
+					    	return (
+					    		<p key={i}>{data}</p>
+					    	)
+					    })}
+					    </Comment.Text></Table.Cell>
 					  </Table.Row>
 					</Table.Body>
 				</Table>

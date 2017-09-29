@@ -45,14 +45,6 @@ class Homeuser extends Component {
 								<Feed.Summary>
 									<Feed.User>{data.owner.username}</Feed.User> posted on {gender} page.
 									<Feed.Date>{moment(data.date).format("HH:mm  MM-DD-YYYY")}</Feed.Date>
-									<Feed.Summary>
-									{isyourself &&
-										<Button size="mini" color="red" floated="right" value={data.owner._id} onClick={this.deletePost}>Delete</Button>
-									}
-									{isyourself &&
-										<Button size="mini" floated="right" value={data.owner._id} onClick={this.editPost}>Edit</Button>
-									}
-									</Feed.Summary>
 								</Feed.Summary>
 								<Feed.Summary>
 									{data.title}
