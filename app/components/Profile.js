@@ -276,7 +276,7 @@ export default class StickyLayout extends Component {
                 {this.state.currentcard === "Home" &&
                   <Homeuser id={this.props.id} username={this.props.username} posts={this.state.posts} update={this.updateParent} />}
                 {this.state.currentcard === "Timeline" &&
-                  <Timeline />}
+                  <Timeline posts={this.state.posts}/>}
                 {this.state.currentcard === "Locations" &&
                   <Locations locations={this.state.locations} />}
                 {this.state.currentcard === "Friends" &&

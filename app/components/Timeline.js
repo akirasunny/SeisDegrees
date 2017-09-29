@@ -6,8 +6,8 @@ import {
 import ReactLifeTimeline from "./ReactLifeTimeline";
 
 class Timeline extends Component {
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
     this.EVENTS = [
 			{date_start: new Date('1992-01-01'), date_end: new Date('2004-01-01'), title: 'Practices civil rights law and teaches constitutional law at the University of Chicago Law School.', color: '#FC004C'},
 			{date_start: new Date('1995-01-01'), title: 'Publishes his autobiography "Dreams from my Father"'},
@@ -22,6 +22,20 @@ class Timeline extends Component {
 			{date_start: new Date('2009-01-20'), date_end: new Date('2017-01-20'), title: 'POTUS'},
 			{date_start: new Date('2017-01-20'), title: 'Leaves the Oval Office after two terms as president.'},
 		];
+
+    // this.EVENTS = this.props.posts.map(
+    //     (post) => {
+    //       return {
+    //         date_start: post.date,
+    //         date_end: post.date,
+    //         title: post.title,
+    //         location: post.location,
+    //         body: post.body,
+    //         tagged: post.tagged,
+    //         img: post.img
+    //       };
+    //     }
+    // )
   }
 
   generate_events(cb) {
@@ -31,8 +45,8 @@ class Timeline extends Component {
 	render() {
 		return (
 			<div>
-        <h1>TESTING</h1>
-        <ReactLifeTimeline subject_name="Barack" get_events={this.generate_events.bind(this)} events={this.props.timeline} birthday={new Date("1961-08-04")}/>
+        <h1>Timeline</h1>
+        <ReactLifeTimeline subject_name="Barack" get_events={this.generate_events.bind(this)} birthday={new Date("1961-08-04")}/>
 			</div>
 		);
 	}

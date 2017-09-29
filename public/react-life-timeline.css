@@ -112,3 +112,11 @@ html, body {
   position: relative;
   bottom: 12px;
 }
+
+.post-image {
+  height: auto;
+}
+
+.thumb {
+  height: 100px;
+}

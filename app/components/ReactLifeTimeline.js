@@ -251,7 +251,7 @@ export default class ReactLifeTimeline extends Component {
 				<div className="LifeTimeline">
 					{ this.render_all_weeks() }
 				</div>
-				<Modal size='large' open={open} onClose={this.close}>
+				<Modal size='small' open={open} onClose={this.close}>
 					<Modal.Header>
 						Posts From The Week of {week_date}
 					</Modal.Header>
@@ -261,10 +261,10 @@ export default class ReactLifeTimeline extends Component {
 							{_.times(cur_events.length,i => (
 								<div key={i}>
 									<Card fluid>
-										<Carousel showArrows={false} autoPlay infiniteLoop showThumbs={true}>
+										<Carousel showArrows={false} autoPlay infiniteLoop showThumbs={true} dynamicHeight>
 											{_.times(cur_events[i].img.length,k => (
 												<div key={k}>
-													<img src={cur_events[i].img[k]} />
+													<img className='post-image' src={cur_events[i].img[k]} />
 												</div>
 											))}
 										</Carousel>
@@ -287,12 +287,6 @@ export default class ReactLifeTimeline extends Component {
 							))}
 						</Carousel>
 					</Modal.Content>
-					<Modal.Actions>
-						<Button negative>
-							No
-						</Button>
-						<Button positive icon='checkmark' labelPosition='right' content='Yes' />
-					</Modal.Actions>
 				</Modal>
 			</div>
 		);
