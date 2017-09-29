@@ -52,7 +52,8 @@ class Post extends Component {
 				location: "",
 				date: ""
 			});
-			/*window.location = "/";*/
+			this.props.update();
+			document.getElementById("postForm").reset();
 		})
 	}
 
@@ -63,7 +64,7 @@ class Post extends Component {
 	render() {
 		return (
 		<Container style={{ marginTop: 20 }}>
-			<Form>
+			<Form id="postForm">
 			<Form.Input placeholder="Title" id="title" onChange={this.handleInput} required/>
 			<Form.Input placeholder="Location" id="location" onChange={this.handleInput} required/>
 			<TextArea placeholder="What's new?" id="body" onChange={this.handleInput} required style={{ minHeight: 100 }} />

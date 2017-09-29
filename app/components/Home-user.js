@@ -14,7 +14,7 @@ class Homeuser extends Component {
 		};
 	}
 	
-	componentWillMount() {
+/*	componentWillMount() {
 	axios.get("/api/Users/" + this.props.id).then(res => {
 			var postsId = res.data.posts.map(data => {
 				return data._id;
@@ -28,12 +28,13 @@ class Homeuser extends Component {
 				this.setState({ posts: posts.data });		
 			});
 		})
+		this.props.update();
 	}
-
+*/
 	render() {
 		return (
 			<Feed>
-				{this.state.posts.map((data, i) => {
+				{this.props.posts.map((data, i) => {
 					var isyourself = data.owner._id === this.props.id;
 					var gender = data.owner.gender === "Female" ? "her" : "his";
 					return (
@@ -44,15 +45,7 @@ class Homeuser extends Component {
 							<Feed.Content>
 								<Feed.Summary>
 									<Feed.User>{data.owner.username}</Feed.User> posted on {gender} page.
-									<Feed.Date>{moment(data.date).format("HH:mm  MM-DD-YYYY")}</Feed.Date>
-									<Feed.Summary>
-									{isyourself &&
-										<Button size="mini" color="red" floated="right" value={data.owner._id} onClick={this.deletePost}>Delete</Button>
-									}
-									{isyourself &&
-										<Button size="mini" floated="right" value={data.owner._id} onClick={this.editPost}>Edit</Button>
-									}
-									</Feed.Summary>
+									<Feed.Date>{moment(data.date).format("MM-DD-YYYY - hh:mm a")}</Feed.Date>
 								</Feed.Summary>
 								<Feed.Summary>
 									{data.title}

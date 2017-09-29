@@ -23,6 +23,9 @@ app.use("/", routes);
 var server = require('http').Server(app);
 var io = socket(server);
 
+//mongodb://heroku_zzb0c88g:3amsr8er3fbofcoausvabdb03s@ds155934.mlab.com:55934/heroku_zzb0c88g
+//mongodb://localhost/6degrees
+
 var db = process.env.MONGODB_URI || "mongodb://localhost/6degrees";
 
 // Connect mongoose to our database

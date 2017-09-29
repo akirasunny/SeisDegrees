@@ -107,7 +107,6 @@ export default class StickyLayout extends Component {
 
   handleCard(card) {
     this.setState({ currentcard: card.currentTarget.textContent });
-    console.log(this.state.currentcard);
   }
 
   chatClose() {
