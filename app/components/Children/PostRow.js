@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {
-  Container, Comment, Divider, Modal, Dropdown, Grid, Header, Icon, Image, List, Menu, Segment, Visibility,
+  Container, Comment, Divider, Table, Modal, Dropdown, Grid, Header, Icon, Image, List, Menu, Segment, Visibility,
 } from 'semantic-ui-react';
 import PostRowComment from "./Grandchildren/PostRowComment";
 
@@ -13,6 +13,9 @@ class PostRow extends Component {
             user: props.post.owner.username,
             userId: props.post.owner._id,
             img: props.post.owner.img,
+            date: props.post.date,
+            title: props.post.title,
+            body: props.post.body,
             open:false,
             location: props.post.location/*,
             comments: props.post.comments*/
@@ -27,14 +30,13 @@ class PostRow extends Component {
 	}*/
 
 	activateLasers(){
-		this.props.update();
 		this.props.modal(this.state);
 	}
 
 	renderComments(){
 		var comments = this.props.post.comments;
 		return comments.map(function(comment,i){
-			return(<PostRowComment comment={comment} key={i} update={this.props.update} modal={this.props.modal} />);
+			return(<PostRowComment comment={comment} key={i} modal={this.props.modal} />);
 		}.bind(this))
 	}
 
@@ -43,11 +45,27 @@ class PostRow extends Component {
 		    <Comment>
 		      <Comment.Avatar src={this.state.img} />
 		      <Comment.Content>
-		        <Comment.Author as='a'>{this.state.username}</Comment.Author>
+		        <Comment.Author as='a'>{this.state.user}</Comment.Author>
 		        <Comment.Metadata>
-		          <div>Today at 5:42PM</div>
+		          <div>{this.state.date}</div>
 		        </Comment.Metadata>
-		        <Comment.Text>{this.state.location}</Comment.Text>
+
+		        <Table celled>
+					<Table.Header>
+					  <Table.Row>
+					    <Table.HeaderCell><Comment.Text><Header>{this.state.title}</Header></Comment.Text></Table.HeaderCell>
+					  </Table.Row>
+					</Table.Header>
+
+					<Table.Body>
+					  <Table.Row>
+					    <Table.Cell><Comment.Text>{this.state.body}</Comment.Text></Table.Cell>
+					  </Table.Row>
+					</Table.Body>
+				</Table>
+		       
+		        
+		        <Comment.Text> @ {this.state.location}</Comment.Text>
 		        <Comment.Actions>
 		          <Comment.Action onClick={this.activateLasers}>Reply</Comment.Action>
 		        </Comment.Actions>
@@ -55,17 +73,6 @@ class PostRow extends Component {
 		       	<Comment.Group>
 		       		{this.renderComments()}
 		    	</Comment.Group>
-{/*		    	  <Modal open={this.state.open}>
-				    <Modal.Header>Select a Photo</Modal.Header>
-				    <Modal.Content image>
-				      <Image wrapped size='medium' src='/assets/images/avatar/large/rachel.png' />
-				      <Modal.Description>
-				        <Header>Default Profile Image</Header>
-				        <p>We've found the following gravatar image associated with your e-mail address.</p>
-				        <p>Is it okay to use this photo?</p>
-				      </Modal.Description>
-				    </Modal.Content>
-				  </Modal>*/}
 		    </Comment>
 		)
 	}
