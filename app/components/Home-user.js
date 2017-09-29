@@ -45,7 +45,7 @@ class Homeuser extends Component {
 							<Feed.Content>
 								<Feed.Summary>
 									<Feed.User>{data.owner.username}</Feed.User> posted on {gender} page.
-									<Feed.Date>{moment(data.date).format("HH:mm  MM-DD-YYYY")}</Feed.Date>
+									<Feed.Date>{moment(data.date).format("MM-DD-YYYY - hh:mm a")}</Feed.Date>
 								</Feed.Summary>
 								<Feed.Summary>
 									{data.title}

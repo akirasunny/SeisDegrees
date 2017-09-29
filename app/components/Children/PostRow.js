@@ -55,47 +55,49 @@ class PostRow extends Component {
 
 	render() {
 		return (
-		    <Comment>
-		      <Comment.Avatar src={this.state.img} />
-		      <Comment.Content>
-		        <Comment.Author as='h4'>{this.state.user}</Comment.Author>
-		        <Comment.Metadata>
-		          <div>{moment(this.state.date).format("HH:mm MM-DD-YYYY")}</div>
-		        </Comment.Metadata>
+			<Segment raised>
+			    <Comment>
+			      <Comment.Avatar src={this.state.img} />
+			      <Comment.Content>
+			        <Comment.Author as='h4'>{this.state.user}</Comment.Author>
+			        <Comment.Metadata>
+			          <div>{moment(this.state.date).format("MM-DD-YYYY - hh:mm a")}</div>
+			        </Comment.Metadata>
 
-		        <Table celled>
-					<Table.Header>
-					  <Table.Row>
-					    <Table.HeaderCell><Comment.Text><Header as="h3">{this.state.title}
-					    <Button size="mini" color="red" floated="right" onClick={this.deletePost} value={this.state.postId}>Delete</Button>
-					    <Button size="mini" floated="right" onClick={this.props.editModal} value={this.state.postId}>Edit</Button>
-					    </Header></Comment.Text></Table.HeaderCell>
-					  </Table.Row>
-					</Table.Header>
+			        <Table celled>
+						<Table.Header>
+						  <Table.Row>
+						    <Table.HeaderCell><Comment.Text><Header as="h3">{this.state.title}
+						    <Button size="mini" color="red" floated="right" onClick={this.deletePost} value={this.state.postId}>Delete</Button>
+						    <Button size="mini" floated="right" onClick={this.props.editModal} value={this.state.postId}>Edit</Button>
+						    </Header></Comment.Text></Table.HeaderCell>
+						  </Table.Row>
+						</Table.Header>
 
-					<Table.Body>
-					  <Table.Row>
-					    <Table.Cell><Comment.Text as="p">
-					    {this.state.body.split("<br />").map((data, i) => {
-					    	return (
-					    		<p key={i}>{data}</p>
-					    	)
-					    })}
-					    </Comment.Text></Table.Cell>
-					  </Table.Row>
-					</Table.Body>
-				</Table>
-		       
-		        
-		        <Comment.Text> @ {this.state.location}</Comment.Text>
-		        <Comment.Actions>
-		          <Comment.Action onClick={this.activateLasers}>Reply</Comment.Action>
-		        </Comment.Actions>
-		      </Comment.Content>
-		       	<Comment.Group>
-		       		{this.renderComments()}
-		    	</Comment.Group>
-		    </Comment>
+						<Table.Body>
+						  <Table.Row>
+						    <Table.Cell><Comment.Text as="p">
+						     {this.state.body.split("<br />").map((data, i) => {
+						    	return (
+						    		<p key={i}>&ldquo;{data}&rdquo;</p>
+						    	)
+						    })}
+						    <p>@ {this.state.location}</p>
+						    </Comment.Text></Table.Cell>
+						  </Table.Row>
+						</Table.Body>
+					</Table>
+			
+			        <Comment.Actions>
+			          <Comment.Action onClick={this.activateLasers}>Reply</Comment.Action>
+			        </Comment.Actions>
+			      </Comment.Content>
+			       	<Comment.Group>
+			       		<Header>Comments: </Header>
+			       		{this.renderComments()}
+			    	</Comment.Group>
+			    </Comment>
+			</Segment>
 		)
 	}
 }
