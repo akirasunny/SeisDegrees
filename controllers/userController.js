@@ -224,7 +224,7 @@ module.exports = {
                     populate: {
                         path: 'owner',
                         model: 'User'
-                    }         
+                    }
                 },{
                     path: 'owner',
                     model: 'User'
@@ -243,16 +243,16 @@ module.exports = {
             });
 
     },
-
+    
     oneUserId: function(req, res) {
-        User.findById(req.params.id).exec(function(error, user) {
-            if (error) {
-                res.send(error);
-            }
-            else {
-                res.send(user);
-            }
-        })
+      User.findById(req.params.id).exec(function(error, user) {
+          if (error) {
+              res.send(error);
+          }
+          else {
+              res.send(user);
+          }
+      })
     },
 
     deleteUser: function(req, res) {

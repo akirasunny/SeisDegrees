@@ -14,6 +14,9 @@ import MyPosts from "./MyPosts";
 import Settings from "./Settings";
 import axios from "axios";
 
+import socketIOClient from "socket.io-client";
+const socket = socketIOClient("http://localhost:3000");
+
 export default class StickyLayout extends Component {
   constructor() {
     super();
@@ -23,7 +26,8 @@ export default class StickyLayout extends Component {
       visible: true,
       locations:[],
       posts:[],
-      chatOpen: false
+      chatOpen: false,
+      online:[]
     };
     this.handleCard = this.handleCard.bind(this);
     this.showHome = this.showHome.bind(this);
@@ -67,6 +71,45 @@ export default class StickyLayout extends Component {
 
   componentDidMount() {
     this.updateParent();
+    socket.on("userJoined", function(data) {
+      axios.get("/api/Users/" + data.id).then((res) => {
+          var filter = this.state.friends.filter((obj)=>{
+            return obj._id == data.id;
+          });
+          var filt2 = this.state.online.filter((obj)=>{
+            return obj._id == res.data._id;
+          });
+          console.log(res.data);
+          if(filter.length !== 0 && filt2.length == 0){
+            this.setState({ online: this.state.online.concat(res.data)});
+          }
+      });
+    }.bind(this));
+    socket.on("userLeft", function(data) {
+        var result = this.state.online.filter(function( obj ) {
+          return obj._id !== data.id;
+        });
+        this.setState({ online: result });
+    }.bind(this));
+    socket.on("tryingToJoin", function(data) {
+      if(this.state.id == data.receiver) {
+        this.openChatWindow(data.sender);
+      }
+    }.bind(this));
+    window.onbeforeunload = (e)=>{
+      e.preventDefault();
+      alert('why?');
+      axios.post("/api/User/Update/"+this.props.id,{online:false}).then(()=>{
+        socket.emit("disconnect",{id: this.props.id});
+      });
+    };
+  }
+
+  componentWillUnmount() {
+    console.log('unmounting profile');
+    axios.post("/api/User/Update/"+this.props.id,{online:false}).then(()=>{
+      socket.emit("disconnect",{id: this.props.id});
+    });
   }
 
   updateParent() {
@@ -79,6 +122,11 @@ export default class StickyLayout extends Component {
         pending: res.data.pending || [],
         friends: res.data.friends || []
       });
+      res.data.friends.forEach(function(friend, i) {
+        if(friend.online) {
+          this.setState({ online: this.state.online.concat(friend) });
+        }
+      }.bind(this));
       axios.get("/api/Users").then(res1 => {
         this.setState({ users: res1.data });
         console.log(res.data.posts);
@@ -91,11 +139,7 @@ export default class StickyLayout extends Component {
             this.runGeocode(location,post);
         }.bind(this));
       });
-    })
-
-    // axios.get("/api/Users").then(res => {
-    //
-    // });
+    });
   }
 
   showHome() {
@@ -112,11 +156,12 @@ export default class StickyLayout extends Component {
   }
 
   chatClose() {
-    this.setState({ chatOpen: false });
+    this.setState({ chatOpen: false, friendId:'' });
   }
 
   openChatWindow(friendId) {
-    this.setState({ chatOpen: true, friendId: friendId });
+    console.log('Hello',friendId);
+    this.setState({ friendId: friendId, chatOpen: true });
   }
 
   render() {
@@ -140,33 +185,25 @@ export default class StickyLayout extends Component {
            direction='right'
            visible={this.state.visible}
            icon='labeled'
-           vertical
            divided
            relaxed
          >
            <Header inverted size='small' color='blue'><Icon name='users'/> Online Friends </Header>
-           {/* map array of online friends to  */}
-           <List.Item onClick={() => {this.openChatWindow(friendId)}}>
-             <List.Icon name='user circle outline' color='green'/>
-             <List.Content>
-               <List.Header>User 1</List.Header>
-               <List.Description>Online</List.Description>
-             </List.Content>
-           </List.Item>
-           <List.Item >
-             <List.Icon name='user circle outline' color='green'/>
-             <List.Content>
-               <List.Header>User 2</List.Header>
-               <List.Description>Online</List.Description>
-             </List.Content>
-           </List.Item>
-           <List.Item>
-             <List.Icon name='user circle outline' color='green'/>
-             <List.Content>
-               <List.Header>User 3</List.Header>
-               <List.Description>Online</List.Description>
-             </List.Content>
-           </List.Item>
+           {
+             this.state.online.map((friend,i)=>{
+               var friendId = friend._id;
+               console.log(friendId);
+               return(
+                 <List.Item value={friendId} onClick={()=>this.openChatWindow(friendId)} key={i}>
+                   <Image src={friend.img} size='mini' shape='circular' />
+                   <List.Content>
+                     <List.Header>{friend.username}</List.Header>
+                     <List.Description><Icon name='circle' color='green' />Online</List.Description>
+                   </List.Content>
+                 </List.Item>
+               );
+             })
+           }
          </Sidebar>
          <Sidebar.Pusher>
            <Segment
@@ -177,7 +214,7 @@ export default class StickyLayout extends Component {
            >
 
               <Container style={{ width: "100%" }}>
-                <Menu inverted style={{ paddingLeft: 100, paddingRight: 100 }}>
+                <Menu inverted style={{ paddingLeft: 20, paddingRight: 190 }}>
                       {this.state.currentcard === "Home" ? <Menu.Item header onClick={this.handleCard} value="Home">Home</Menu.Item> : <Menu.Item onClick={this.handleCard} value="Home">Home</Menu.Item>}
                       {this.state.currentcard === "Timeline" ? <Menu.Item header onClick={this.handleCard} value="Timeline">Timeline</Menu.Item> : <Menu.Item onClick={this.handleCard} value="Timeline">Timeline</Menu.Item>}
                       {this.state.currentcard === "Locations"? <Menu.Item header onClick={this.handleCard} value="Locations">Locations</Menu.Item> : <Menu.Item onClick={this.handleCard} value="Locations">Locations</Menu.Item>}
@@ -235,7 +272,7 @@ export default class StickyLayout extends Component {
                 </Grid.Column>
               </Grid.Row>
             </Grid>
-            {this.state.openChat &&
+            {this.state.chatOpen &&
               <ChatWindow
                 names={{ id: this.state.id, friendId: this.state.friendId }}
                 chatClose = {this.chatClose}

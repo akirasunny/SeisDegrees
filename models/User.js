@@ -44,6 +44,10 @@ var UserSchema = new Schema({
         type: String,
         default: "Secret"
     },
+    online: {
+      type: Boolean,
+      default: false
+    },
     // This only saves one note's ObjectId, ref refers to the Note model
     posts: [{
         type: Schema.Types.ObjectId,
@@ -72,7 +76,7 @@ var UserSchema = new Schema({
 
 });
 
-// Attach to predefined password and secret field 
+// Attach to predefined password and secret field
 UserSchema.plugin(require('mongoose-bcrypt'));
 
 // Create the User model with the UserSchema
