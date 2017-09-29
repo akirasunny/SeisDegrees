@@ -24,7 +24,7 @@ class Post extends Component {
 	}
 
 	saveTagged(tagged) {
-		this.setState({ tagged: pernson });
+		this.setState({ tagged: person });
 	}
 
 	handleInput(event) {
@@ -37,7 +37,7 @@ class Post extends Component {
 		var state = this.state;
 		var obj = {
 			title: state.title,
-			body: state.body,
+			body: state.body.replace(/\n/g,"<br />"),
 			img: state.img,
 			location: state.location,
 			date: state.date,
@@ -52,7 +52,7 @@ class Post extends Component {
 				location: "",
 				date: ""
 			});
-			window.location = "/";
+			/*window.location = "/";*/
 		})
 	}
 
@@ -72,11 +72,7 @@ class Post extends Component {
 
 			<Images id={this.props.id} saveImage={this.saveImage}/>
 
-			<Icon name="marker" size="large"/>
-
 			<Icon name="add user" size="large"/>
-
-			<Icon name="calendar" size="large"/>
 
 			<Button floated="right" color="grey" onClick={this.createPost}>Post</Button>
 			</Container>

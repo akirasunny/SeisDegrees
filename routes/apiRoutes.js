@@ -81,7 +81,7 @@ router.get("/Post/:postId/Tag/:userId", postController.addTagged);
 router.get("/Post/:postId/Untag/:userId", postController.removeTagged);
 
 // Get all Posts
-router.get("/Posts", postController.allPosts);
+router.post("/Posts", postController.allPosts);
 
 // Get one Post
 router.get("/Posts/:id", postController.onePost);
