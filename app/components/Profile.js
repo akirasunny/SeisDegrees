@@ -262,7 +262,7 @@ export default class StickyLayout extends Component {
                 <Grid.Column width={3}>
                 </Grid.Column>
                 <Grid.Column width={7}>
-                  <Post id={this.props.id} username={this.props.username} showHome={this.showHome}/>
+                  <Post id={this.props.id} username={this.props.username} showHome={this.showHome} update={this.updateParent} />
                 </Grid.Column>
                 <Grid.Column width={6}>
                 </Grid.Column>
