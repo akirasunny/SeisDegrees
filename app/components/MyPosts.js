@@ -4,6 +4,7 @@ import {
   Container, Comment, Modal, Divider, TextArea, Button, Form, Dropdown, Grid, Header, Icon, Image, List, Menu, Segment, Visibility,
 } from 'semantic-ui-react';
 import PostRow from "./Children/PostRow";
+import PostHolder from "./PostHolder";
 import axios from "axios";
 
 
@@ -12,11 +13,14 @@ class Posts extends Component {
 		super(props);
 		this.state = {
 			open:false,
+			editOpen: false,
 			info:""
         };
         this.renderModal = this.renderModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
         this.createPost = this.createPost.bind(this);
+        this.editModal = this.editModal.bind(this);
+        this.editClose = this.editClose.bind(this);
         /*this.handleInput = this.createPost.bind(this);*/
 	}
 
@@ -33,7 +37,7 @@ class Posts extends Component {
 	populatePosts(){
 		var posts = this.props.posts;
 		return posts.map(function(post,i){
-			return(<PostRow post={post} key={i} update={this.props.update} modal={this.renderModal} />);
+			return(<PostRow post={post} key={i} update={this.props.update} modal={this.renderModal} editModal={this.editModal}/>);
 		}.bind(this));
 	}
 
@@ -47,6 +51,21 @@ class Posts extends Component {
 		this.setState({open:false,info:""});
 	}
 
+	editModal(post) {
+		var postId = post.currentTarget.value;
+		axios.get("/api/Posts/" + postId).then(res => {
+			this.setState({
+				currentPost: res.data,
+				editOpen: true
+			});
+		});
+	}
+
+	editClose() {
+		this.setState({ editOpen: false });
+		this.props.update();
+	}
+
 	createPost() {
 		var obj = {
 			postId: this.state.info.postId,
@@ -56,8 +75,6 @@ class Posts extends Component {
 		/*console.log("BLAM!",obj);*/
 		localStorage.removeItem('comment');
 		axios.post("/api/Comment", obj).then(res => {
-	
-			console.log(res);
 			this.props.update();
 		});
 		this.closeModal();
@@ -96,6 +113,11 @@ class Posts extends Component {
 				      </Button>
 				    </Modal.Actions>
 				</Modal>
+				{this.state.currentPost && 
+					<PostHolder 
+					editOpen={this.state.editOpen} 
+					currentPost={this.state.currentPost}
+					editClose={this.editClose}/>}
 			</Comment.Group>
 		)
 	}

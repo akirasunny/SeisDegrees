@@ -52,7 +52,7 @@ class Post extends Component {
 				location: "",
 				date: ""
 			});
-			/*window.location = "/";*/
+			this.props.update();
 		})
 	}
 

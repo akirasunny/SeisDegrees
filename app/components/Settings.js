@@ -39,14 +39,14 @@ class Settings extends Component {
 	handleSubmit() {
 		axios.post("/api/User/Update/" + this.props.id, this.state).then(res => {
 			alert("Your profile has been updated successfully.");
-			this.props.showHome();
+			window.location = "/";
 		})
 	}
 
 	render() {
 		return (
 		<div>
-			<Header>Settings</Header>
+			<Header dividing>Settings</Header>
 			<Form>
 				<Form.Group widths="equal">
 					<Form.Field control={Image} label='Profile photo' placeholder='Username'>
