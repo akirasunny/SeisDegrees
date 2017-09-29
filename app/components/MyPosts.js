@@ -1,9 +1,11 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
 import {
-  Container, Comment, Modal, Divider, Button, Dropdown, Grid, Header, Icon, Image, List, Menu, Segment, Visibility,
+  Container, Comment, Modal, Divider, TextArea, Button, Form, Dropdown, Grid, Header, Icon, Image, List, Menu, Segment, Visibility,
 } from 'semantic-ui-react';
 import PostRow from "./Children/PostRow";
+import axios from "axios";
+
 
 class Posts extends Component {
 	constructor(props) {
@@ -14,7 +16,8 @@ class Posts extends Component {
         };
         this.renderModal = this.renderModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
-        this.renderLocationText = this.renderLocationText.bind(this);
+        this.createPost = this.createPost.bind(this);
+        /*this.handleInput = this.createPost.bind(this);*/
 	}
 
 /*	componentWillReceiveProps(newProps) {
@@ -34,36 +37,61 @@ class Posts extends Component {
 		}.bind(this));
 	}
 
+	handleInput(event) {
+		var obj = {};
+		obj[event.target.id] = event.target.value;
+		localStorage.setItem('comment', obj.body);
+	}
+
 	closeModal(){
 		this.setState({open:false,info:""});
 	}
 
-	renderLocationText(){
-		if(this.state.info.location){
-			return "/" + this.state.info.location + "/";
-		}
+	createPost() {
+		var obj = {
+			postId: this.state.info.postId,
+			owner: document.cookie.replace(/(?:(?:^|.*;\s*)userId\s*\=\s*([^;]*).*$)|^.*$/, "$1"),
+			body: localStorage.getItem("comment")
+		};
+		/*console.log("BLAM!",obj);*/
+		localStorage.removeItem('comment');
+		axios.post("/api/Comment", obj).then(res => {
+	
+			console.log(res);
+			this.props.update();
+		});
+		this.closeModal();
 	}
 
 	render() {
 		return (
 			<Comment.Group size="large">
 				<Header as='h3' dividing>My Posts</Header>
+
 				{this.populatePosts()}
-				<Modal open={this.state.open}>
-				    <Modal.Header>Add a Comment: {this.renderLocationText()}</Modal.Header>
+
+				<Modal open={this.state.open} size={'small'}>
+				    <Modal.Header>Reply to {this.state.info.user}'s post!</Modal.Header>
 				    <Modal.Content image>
 				      <Image wrapped size='medium' src={this.state.info.img} />
 				      <Modal.Description>
-				        <Header>{this.state.info.user}</Header>
-				        <p>We've found the following gravatar image associated with your e-mail address.</p>
-				        <p>Is it okay to use this photo?</p>
+				        <Header>{this.state.info.title}</Header>
+				        <p>@ {this.state.info.location}</p>
+{/*				        <p>We've found the following gravatar image associated with your e-mail address.</p>
+				        <p>Is it okay to use this photo?</p>*/}
+
+				        <Form>
+
+							<TextArea placeholder="Respond here!" id="body" onChange={this.handleInput} required style={{ minHeight:100, minWidth:250}} />
+						
+						</Form>
 				      </Modal.Description>
 				    </Modal.Content>
 				    <Modal.Actions>
 				      <Button color='red' inverted  onClick={this.closeModal}>
 				        <Icon name='remove' /> Cancel
 				      </Button>
-				      <Button color='green' inverted onClick={this.closeModal}>
+				      <Button color='green' inverted onClick={this.createPost}>
 				        <Icon name='checkmark' /> Post Comment
 				      </Button>
 				    </Modal.Actions>

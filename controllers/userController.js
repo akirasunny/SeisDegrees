@@ -5,19 +5,63 @@ module.exports = {
 
     createUser: function(req, res) {
 
-        // Create new User w/ data from front-end
-        var newUser = new User(req.body);
-        // Save the new User to mongoose
-        newUser.save(function(error, user) {
+        User.findOne({ username: req.body.username }, function(error, user) {
+
             // Send any errors to the browser
             if (error) {
                 res.send(error);
             }
             // Otherwise send the new User to the browser.
             else {
-                res.send(user);
+
+                if(user){
+                    res.send("User already exists!");
+                }
+                else{
+
+
+                    User.findOne({ email: req.body.email }, function(error, user) {
+
+                        // Send any errors to the browser
+                        if (error) {
+                            res.send(error);
+                        }
+                        // Otherwise send the new User to the browser.
+                        else {
+
+                            if(user){
+                                res.send("User already exists!")
+                            }
+                            else{
+
+                                // Create new User w/ data from front-end
+                                var newUser = new User(req.body);
+                                // Save the new User to mongoose
+                                newUser.save(function(error, user) {
+                                    
+                                    // Send any errors to the browser
+                                    if (error) {
+                                        res.send(error);
+                                    }
+                                    // Otherwise send the new User to the browser.
+                                    else {
+                                        res.send(user);
+                                    }
+
+                                });
+
+                            }
+
+                        }
+
+                    });
+
+                }
+
             }
+
         });
+
     },
 
     validateLogin: function(req, res) {

@@ -78,10 +78,10 @@ class Locations extends Component {
     addInfo(location) {
         console.log(location[4]);
         var comments = this.addComments(location[4]);
-        var info = "<h3>" + location[0] + "</h3>"
+        var info = "<div class='infoWindow'><h3>" + location[0] + "</h3>"
         + "<hr>" + location[3]
         + "<br><h4>POST: </h4>" + location[4].body
-        + "<br><h4>Comments: </h4>" + comments;
+        + "<br><h4>Comments: </h4>" + comments + "</div>";
         //"<h1>" + location[0] + "</h1>"
         return info;
     }
@@ -188,7 +188,7 @@ class Locations extends Component {
     render() {
         return (
             <Grid>
-                <Grid.Column id="map" floated='right' style={{minHeight: 400, width:400}}>
+                <Grid.Column id="map" floated='right' style={{minHeight: 800, minWidth:800}}>
                 </Grid.Column>
             </Grid>
         )

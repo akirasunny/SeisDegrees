@@ -24,7 +24,7 @@ class Post extends Component {
 	}
 
 	saveTagged(tagged) {
-		this.setState({ tagged: pernson });
+		this.setState({ tagged: person });
 	}
 
 	handleInput(event) {
@@ -52,7 +52,7 @@ class Post extends Component {
 				location: "",
 				date: ""
 			});
-			window.location = "/";
+			/*window.location = "/";*/
 		})
 	}
 
