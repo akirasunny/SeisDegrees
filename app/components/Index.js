@@ -17,6 +17,10 @@ import Signup from "./Signup";
 import Home from "./Home";
 import Profile from "./Profile";
 import Logout from "./Logout";
+import axios from "axios";
+
+import socketIOClient from "socket.io-client";
+const socket = socketIOClient("http://localhost:3000");
 
 const FixedMenu = () => (
   <Menu inverted fixed='top' size='large'>
@@ -48,23 +52,25 @@ class Index extends Component {
         return data.substring(data.indexOf("=") + 1);
       });
       this.setState({ login: array[0], username: array[1], page: "Profile" });
+      axios.post("/api/User/Update/"+array[0],{online:true}).then(()=>{
+        socket.emit("signIn",{id: array[0], username: array[1]});
+      });
     }
   }
 
   handleLogin(userid, username) {
     this.setState({ login: userid, username: username, page: "Profile" });
+    axios.post("/api/User/Update/"+userid,{online:true}).then(()=>{
+      socket.emit("signIn",{id: userid, username: username});
+    });
   }
-
-  // showprofile() {
-  //   this.setState({ page: "Profile" });
-  // }
 
   handleLogout() {
     delete this.state.login;
     delete this.state.username;
     document.cookie = "userId=''; expires=Thu, 18 Dec 2002 12:00:00 UTC";
     document.cookie = "username=''; expires=Thu, 18 Dec 2002 12:00:00 UTC";
-    this.setState({ page: "Home"})
+    this.setState({ page: "Home"});
   }
 
   handlePage(page) {

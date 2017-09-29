@@ -229,33 +229,6 @@ export default class ReactLifeTimeline extends Component {
 		);
 	}
 
-	// renderThumbs(tips, date) {
-	// 	console.log('ran');
-	// 	// create grid for thumbnails
-	// 	var dim = Math.ceil(Math.sqrt(tips.length));
-	// 	return (
-	// 		<div>
-	// 			<p><strong>{date}</strong></p>
-	// 			<Grid>
-	// 				{_.times(dim, i => (
-	// 					<Grid.Row key={i}>
-	// 						{_.times(dim,j => {
-	// 							if(tips.length == 0) {
-	// 								return;
-	// 							}
-	// 							return (
-	// 								<Grid.Column key={j}>
-	// 									<Image src={tips.splice(0,1)[0]} />;
-	// 								</Grid.Column>
-	// 							);
-	// 						})}
-	// 					</Grid.Row>
-	// 				))}
-	// 			</Grid>
-	// 		</div>
-	// 	);
-	// }
-
 	render_all_weeks() {
 		let weeks = [];
 		this.all_weeks((start, end) => {

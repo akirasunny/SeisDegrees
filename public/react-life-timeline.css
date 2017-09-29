@@ -50,3 +50,65 @@ html, body {
 .ui.divided.list > .item {
   padding-left: 5px;
 }
+
+.item:hover {
+  background: #eee;
+}
+
+.chat-window {
+  width: 302px;
+  z-index: 1001;
+  margin-right: 10px;
+  float: right;
+  border: 1px solid lightgrey;
+  border-radius: 5px 5px 0px 0px;
+  position: relative;
+  right: 170px;
+}
+
+.messages {
+  max-height: 350px;
+  overflow-y: scroll;
+  padding: 5px;
+}
+
+.ui.mini.circular.image {
+  margin: 5px;
+}
+
+.ui.compact.button {
+  padding: 5px;
+  padding-top: 12px;
+  background: #5ac9fd;
+}
+
+.chat-header {
+  background: #5ac9fd;
+  border-radius: 5px 5px 0px 0px;
+  margin: 0px !important;
+}
+
+.chat-send-pic {
+  margin: 0 !important;
+}
+
+.msg-input {
+  width: 300px;
+  background: lightgrey;
+  height: 40px;
+}
+
+.chat-input {
+  width: 210px;
+  margin: 0 !important;
+  display: inline-flex;
+  height: 30px;
+  position: relative;
+  bottom: 10px;
+}
+
+.msg-send-btn {
+  display: inline-flex;
+  position: relative;
+  bottom: 12px;
+}
