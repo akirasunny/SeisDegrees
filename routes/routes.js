@@ -22,4 +22,8 @@ router.get("/public/assets/ProfileImages/:file", function(req, res) {
 	res.sendFile(path.join(__dirname, "../public/assets/ProfileImages/" + req.params.file));
 });
 
+router.get("/public/assets/Carousel/:file", function(req, res) {
+	res.sendFile(path.join(__dirname, "../public/assets/Carousel/" + req.params.file));
+});
+
 module.exports = router;
