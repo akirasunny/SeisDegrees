@@ -24,7 +24,7 @@ class Friends extends Component {
 	render() {
 		return (
 			<Feed>
-			<Header as="h3">Friends</Header>
+			<Header as="h3" dividing>Friends</Header>
 			{this.props.pending.length !== 0 &&
 				<Pending updateParent={this.props.updateParent} pending={this.props.pending} id={this.props.id} showFriends={this.props.showFriends}/>
 			}
