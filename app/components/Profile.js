@@ -81,7 +81,6 @@ export default class StickyLayout extends Component {
       });
       axios.get("/api/Users").then(res1 => {
         this.setState({ users: res1.data });
-        console.log(res.data.posts);
         var posts = res.data.posts;
         this.setState({posts:posts})
 
@@ -253,43 +252,43 @@ export default class StickyLayout extends Component {
             <Grid columns={4} divided stackable inverted>
               <Grid.Row>
                 <Grid.Column>
-                  <Header inverted as='h4' content='Group 1' />
+                  <Header inverted as='h4' content='Javier Avitia' />
                   <List link inverted>
-                    <List.Item as='a'>Link One</List.Item>
-                    <List.Item as='a'>Link Two</List.Item>
-                    <List.Item as='a'>Link Three</List.Item>
-                    <List.Item as='a'>Link Four</List.Item>
+                    <List.Item>Full-Stack Developer</List.Item>
+                    <List.Item><Image size="small" shape="circular" src="../../public/assets/ProfileImages/javier.png"/></List.Item>
+                    <List.Item>GitHub: <a href="https://github.com/Gr8ChairmanMeow">Gr8ChairmanMeow</a></List.Item>
                   </List>
                 </Grid.Column>
                 <Grid.Column>
-                  <Header inverted as='h4' content='Group 2' />
+                  <Header inverted as='h4' content='Hao Su' />
                   <List link inverted>
-                    <List.Item as='a'>Link One</List.Item>
-                    <List.Item as='a'>Link Two</List.Item>
-                    <List.Item as='a'>Link Three</List.Item>
-                    <List.Item as='a'>Link Four</List.Item>
+                    <List.Item>Full-Stack Developer</List.Item>
+                    <List.Item><Image size="small" shape="circular" src="../../public/assets/ProfileImages/hao.jpg"/></List.Item>
+                    <List.Item>GitHub: <a href="https://github.com/akirasunny">akirasunny</a></List.Item>
                   </List>
                 </Grid.Column>
                 <Grid.Column>
-                  <Header inverted as='h4' content='Group 3' />
+                  <Header inverted as='h4' content='Stephen Woo' />
                   <List link inverted>
-                    <List.Item as='a'>Link One</List.Item>
-                    <List.Item as='a'>Link Two</List.Item>
-                    <List.Item as='a'>Link Three</List.Item>
-                    <List.Item as='a'>Link Four</List.Item>
+                    <List.Item>Full-Stack Developer</List.Item>
+                    <List.Item><Image size="small" shape="circular" src="../../public/assets/ProfileImages/stephen.png"/></List.Item>
+                    <List.Item>GitHub: <a href="https://github.com/stephenwoo95">stephenwoo95</a></List.Item>
                   </List>
                 </Grid.Column>
                 <Grid.Column>
-                  <Header inverted as='h4' content='Footer Header' />
-                  <p>Extra space for a call to action inside the footer that could help re-engage users.</p>
+                  <Header inverted as='h4' content='Acknowledgements' />
+                  <p>Clark Nielsen</p>
+                  <p>Paige Pittman</p>
+                  <p>Josh Apstein</p>
+                  <p>UCLA Extension Coding Bootcamp (Full-Time) - July, 2017</p>
+                  <p>Semantic UI</p>
                 </Grid.Column>
               </Grid.Row>
             </Grid>
             <Divider inverted section />
             <Image src='/logo.png' centered size='mini' />
             <List horizontal inverted divided link>
-              <List.Item as='a' href='#'>Site Map</List.Item>
-              <List.Item as='a' href='#'>Contact Us</List.Item>
+              <List.Item as='a' href='https://github.com/akirasunny/diary'>GitHub Repository</List.Item>
               <List.Item as='a' href='#'>Terms and Conditions</List.Item>
               <List.Item as='a' href='#'>Privacy Policy</List.Item>
             </List>

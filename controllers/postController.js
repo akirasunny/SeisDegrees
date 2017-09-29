@@ -112,7 +112,6 @@ module.exports = {
                         }
                         // Or send the updatedUser and updatedPost to the browser
                         else {
-                            console.log(updatedUser)
                             res.send([updatedUser, updatedPost]);
                         }
                     });
@@ -122,31 +121,19 @@ module.exports = {
     },
 
     allPosts: function(req, res) {
-
-/*        // Find all Posts
-        Post.find({ owner: req.params.id }).populate(["owner", "tagged"])
-            .exec(function(error, all) {
+        var postsId = req.body.array;
+        Post.find({ _id: { $in: postsId } }, null, { sort: { date: -1}}).populate(["owner", "tagged","comments"])
+        .exec(function(error, all) {
                 // Send any errors to the browser
                 if (error) {
                     res.send(error);
                 }
                 // Or, send our results to the browser
                 else {
-                    res.send(all);
-                }
-            });*/
-                    // Find all Posts
-        Post.find({},function(error, all) {
-                // Send any errors to the browser
-                if (error) {
-                    res.send(error);
-                }
-                // Or, send our results to the browser
-                else {
+                    console.log(all);
                     res.send(all);
                 }
             });
-
     },
 
     onePost: function(req, res) {
@@ -182,5 +169,4 @@ module.exports = {
             });
 
     }
-
 }
