@@ -22,6 +22,7 @@ class ImageProfile extends Component {
 	}
 
 	handleUpload(event) {
+		console.log(event.target.files);
 		this.setState({ image: event.target.files });
 	}
 
@@ -42,8 +43,8 @@ class ImageProfile extends Component {
 	render() {
 		return(
 			<Modal
-				open={this.state.open} 
-				style={{ minHeight: 300, width: "70%", padding: 20 }} 
+				open={this.state.open}
+				style={{ minHeight: 300, width: "70%", padding: 20 }}
 				trigger={<Button onClick={this.handleOpen}>Update profile photo</Button>}
 			>
 				<Header size='small'>Update your profile photo.</Header>

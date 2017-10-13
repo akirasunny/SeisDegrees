@@ -229,33 +229,6 @@ export default class ReactLifeTimeline extends Component {
 		);
 	}
 
-	// renderThumbs(tips, date) {
-	// 	console.log('ran');
-	// 	// create grid for thumbnails
-	// 	var dim = Math.ceil(Math.sqrt(tips.length));
-	// 	return (
-	// 		<div>
-	// 			<p><strong>{date}</strong></p>
-	// 			<Grid>
-	// 				{_.times(dim, i => (
-	// 					<Grid.Row key={i}>
-	// 						{_.times(dim,j => {
-	// 							if(tips.length == 0) {
-	// 								return;
-	// 							}
-	// 							return (
-	// 								<Grid.Column key={j}>
-	// 									<Image src={tips.splice(0,1)[0]} />;
-	// 								</Grid.Column>
-	// 							);
-	// 						})}
-	// 					</Grid.Row>
-	// 				))}
-	// 			</Grid>
-	// 		</div>
-	// 	);
-	// }
-
 	render_all_weeks() {
 		let weeks = [];
 		this.all_weeks((start, end) => {
@@ -278,7 +251,7 @@ export default class ReactLifeTimeline extends Component {
 				<div className="LifeTimeline">
 					{ this.render_all_weeks() }
 				</div>
-				<Modal size='fullscreen' open={open} onClose={this.close}>
+				<Modal size='large' open={open} onClose={this.close}>
 					<Modal.Header>
 						Posts From The Week of {week_date}
 					</Modal.Header>
@@ -288,7 +261,7 @@ export default class ReactLifeTimeline extends Component {
 							{_.times(cur_events.length,i => (
 								<div key={i}>
 									<Card fluid>
-										<Carousel showArrows={true} autoPlay infiniteLoop showThumbs={true}>
+										<Carousel showArrows={false} autoPlay infiniteLoop showThumbs={true}>
 											{_.times(cur_events[i].img.length,k => (
 												<div key={k}>
 													<img src={cur_events[i].img[k]} />

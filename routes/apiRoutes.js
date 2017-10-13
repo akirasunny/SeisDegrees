@@ -119,7 +119,7 @@ router.post("/Chat/Log/:chatId/:userId", chatController.updateLog);
 // Add new member to a Chat
 router.get("/Chat/:chatId/Add/:userId", chatController.addMember);
 
-// Add new member to a Chat
+// Remove member from a Chat
 router.get("/Chat/:chatId/Remove/:userId", chatController.removeMember);
 
 // Get all Chats

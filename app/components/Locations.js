@@ -56,7 +56,7 @@ class Locations extends Component {
         console.log(this.props.locations);
         var map = new google.maps.Map(document.getElementById('map'), {
             center: { lat: 34.048775, lng: -118.258615 },
-            zoom: 11,
+            zoom: 10,
             mapTypeControl: false,
             clickableIcons: false
         });
@@ -68,7 +68,8 @@ class Locations extends Component {
         var comment = "<ol>";
         post.comments.forEach(function(commentId, i) {
 
-            comment += "<li>" + commentId.body + "</li><br>";
+            comment += "<li class='commBox'>" + commentId.owner.username
+            + " said, <br><em>&ldquo;" + commentId.body + "&rdquo;</em></li><br>";
 
         });
         comment += "</ol>";
@@ -79,43 +80,13 @@ class Locations extends Component {
         console.log(location[4]);
         var comments = this.addComments(location[4]);
         var info = "<div class='infoWindow'><h3>" + location[0] + "</h3>"
+        + "<img src='" + location[4].img[0] +"' width='300'/>"
         + "<hr>" + location[3]
         + "<br><h4>POST: </h4>" + location[4].body
         + "<br><h4>Comments: </h4>" + comments + "</div>";
         //"<h1>" + location[0] + "</h1>"
         return info;
     }
-
-    // // This function serves our purpose of running the query to geolocate.
-    // runGeocode(location) {
-
-    //     /*console.log(location);*/
-
-    //     // Figure out the geolocation
-    //     //"http://api.opencagedata.com/geocode/v1/json?query=" + location + "&pretty=1&key=" + this.state.geocodeAPI
-    //     var queryURL = "https://maps.googleapis.com/maps/api/geocode/json?address=" + location + "&key=" + this.state.googleAPI;
-    //     return axios.get(queryURL).then(function(response) {
-    //         /*console.log(response);*/
-    //         /*console.log(response.data.results[0].geometry.location,"/",response.data.results[0].formatted_address);*/
-    //       // If get get a result, return that result's formatted address property
-    //       if (response.data.results[0]) {
-    //         var latLong = response.data.results[0].geometry.location;
-    //         var unitLoc = [location,latLong.lat,latLong.lng];
-    //         var newArray = this.state.latLongArr.slice();
-    //         newArray.push(unitLoc)
-    //         this.setState({latLongArr:newArray});
-    //         /*console.log(this.state.latLongArr);*/
-    //         // console.log(typeof latLong.lat)
-    //         /*console.log(location,response.data.results[0].geometry.location);*/
-    //         /*console.log(unitLoc);*/
-    //        /* this.latLongArr.push()*/
-    //       }
-    //       else{
-    //         // If we don't get any results, return an empty string
-    //         console.log("Location not found.");
-    //       }
-    //     }.bind(this));
-    // }
 
     populateMarkers(latLongArr,map) {
         console.log(latLongArr);
